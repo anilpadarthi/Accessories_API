@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace POS_Accessories.Models;
 
@@ -15,6 +13,9 @@ public partial class AccessoriesDbContext : DbContext
     {
     }
 
+    
+
+    public virtual DbSet<User> user { get; set; }
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Colour> Colours { get; set; }
@@ -63,6 +64,7 @@ public partial class AccessoriesDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<User>();
         modelBuilder.Entity<Category>(entity =>
         {
             entity.ToTable("Category");

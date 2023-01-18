@@ -30,6 +30,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using POS_Accessories.Business.Helper;
 using POS_Accessories.Business.Interfaces;
 using POS_Accessories.Business.Services;
 using POS_Accessories.Data.Repository.Interfaces;
@@ -56,6 +57,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 
@@ -67,11 +69,12 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 
-//configuration.GetSection(ApplicationSettings.dbConnection).Bind(ApplicationSettings.ConnectionString);
-//configuration.GetSection(ApplicationSettings.mailSettings).Bind(ApplicationSettings.MailSettings);
+configuration.GetSection(ApplicationSettings.dbConnection).Bind(ApplicationSettings.ConnectionString);
+configuration.GetSection(ApplicationSettings.mailSettings).Bind(ApplicationSettings.MailSettings);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

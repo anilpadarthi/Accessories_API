@@ -29,35 +29,35 @@ namespace POS_Accessories.Controllers
             return Json(result);
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var result = await _service.GetAllCategoriesAsync();
-            return Json(result);
+            return Json(result.Where(cat => cat.Status != "D"));
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {           
             var result = await _service.GetCategoryAsync(id);
             return Json(result);
         }
 
-        [HttpPost("Create")]
+        [HttpPost]
         public async Task<IActionResult> Create(Category request)
         {
             var result = await _service.CreateCategoryAsync(request);
             return Json(result);
         }
 
-        [HttpPut("Update")]
+        [HttpPut]
         public async Task<IActionResult> Update(Category request)
         {
             var result = await _service.UpdateCategoryAsync(request);
             return Json(result);
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _service.DeleteCategoryAsync(id);

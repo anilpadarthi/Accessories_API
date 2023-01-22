@@ -26,7 +26,7 @@ namespace POS_Accessories.Controllers
             request.pageSize = pageSize ?? int.Parse(_configuration["PageSize"]);
             request.searchText = searchText;
             var result = await _service.GetAllCategoriesAsync();
-            return Json(result);
+            return Json(result.Where(cat => cat.Status != "D"));
         }
 
         [HttpGet]

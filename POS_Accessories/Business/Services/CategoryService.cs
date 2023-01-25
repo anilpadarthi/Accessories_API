@@ -2,6 +2,8 @@
 using POS_Accessories.Data.Repository.Interfaces;
 using POS_Accessories.Models;
 using POS_Accessories.Models.Request;
+using POS_Accessories.Models.Response;
+using System.Net;
 
 namespace POS_Accessories.Business.Services
 {
@@ -13,22 +15,64 @@ namespace POS_Accessories.Business.Services
         {
             _categoryRepository = categoryRepository;
         }
-        public async Task<IEnumerable<string>> CreateCategoryAsync(Category request)
+        public async Task<CommonResponse> CreateCategoryAsync(Category request)
         {
-            return await _categoryRepository.CreateCategoryAsync(request);
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var result = await _categoryRepository.GetCategoryByNameAsync(request.CategoryName);
+                if (result != null)
+                {
+                    response.data = "Category name already exist";
+                    response.statusCode = HttpStatusCode.Conflict;
+                    response.status = true;
+                }
+                else
+                {
+                    await _categoryRepository.CreateCategoryAsync(request);
+                    response.data = "Created successfully";
+                    response.statusCode = HttpStatusCode.Created;
+                    response.status = true;
+                    response.count = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
         }
 
         public async Task<IEnumerable<string>> DeleteCategoryAsync(int categoryId)
-        {            
+        {
             return await _categoryRepository.DeleteCategoryAsync(categoryId);
         }
 
-        public async Task<IEnumerable<string>> UpdateCategoryAsync(Category request)
+        public async Task<CommonResponse> UpdateCategoryAsync(Category request)
         {
-            var category = await _categoryRepository.GetCategoryAsync(request.CategoryId);
-            category.CategoryName = request.CategoryName;
-            category.Image = request.Image;
-            return await _categoryRepository.UpdateCategoryAsync(request);            
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var result = await _categoryRepository.GetCategoryByNameAsync(request.CategoryName);
+                if (result != null)
+                {
+                    response.message = "Category name already exist";
+                    response.statusCode = HttpStatusCode.Conflict;
+                    response.status = true;
+                }
+                else
+                {
+                    await _categoryRepository.UpdateCategoryAsync(request);
+                    response.message = "Updated successfully";
+                    response.statusCode = HttpStatusCode.OK;
+                    response.status = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
         }
 
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync()

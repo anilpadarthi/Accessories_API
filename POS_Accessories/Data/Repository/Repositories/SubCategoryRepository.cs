@@ -13,10 +13,21 @@ namespace POS_Accessories.Data.Repository.Repositories
 
         public async Task<IEnumerable<string>> CreateSubCategoryAsync(SubCategory request)
         {
-            _context.Add(request);
-            await _context.SaveChangesAsync();
             List<string> resultList = new List<string>();
-            resultList.Add("Created successfully");
+            var category = await _context.Set<SubCategory>()
+                          .Where(w => w.CategoryId == request.CategoryId && w.SubCategoryName.ToUpper() == request.SubCategoryName.ToUpper())
+                          .FirstOrDefaultAsync();
+
+            if (category != null)
+            {
+                resultList.Add("Sub category name already exist");
+            }
+            else
+            {
+                _context.Add(request);
+                await _context.SaveChangesAsync();
+                resultList.Add("Created successfully");
+            }
             return resultList;
         }
 
@@ -32,11 +43,23 @@ namespace POS_Accessories.Data.Repository.Repositories
 
         public async Task<IEnumerable<string>> UpdateSubCategoryAsync(SubCategory request)
         {
-            //var subCategory = await GetSubCategoryAsync(request.SubCategoryId);
-            //subCategory.SubCategoryName = request.SubCategoryName;
-            await _context.SaveChangesAsync();
             List<string> resultList = new List<string>();
-            resultList.Add("Updated successfully");
+            var subCategory = await _context.Set<SubCategory>()
+                .Where(w => w.CategoryId == request.CategoryId && w.SubCategoryName.ToUpper() == request.SubCategoryName.ToUpper())
+                .FirstOrDefaultAsync();
+
+            if (subCategory != null && subCategory.CategoryId == request.CategoryId && subCategory.SubCategoryId != request.SubCategoryId)
+            {
+                resultList.Add("Sub category name already exist");
+            }
+            else
+            {
+                subCategory = await _context.Set<SubCategory>().Where(w => w.SubCategoryId == request.SubCategoryId).FirstOrDefaultAsync();
+                subCategory.SubCategoryName = request.SubCategoryName;
+                subCategory.Image = request.Image;
+                await _context.SaveChangesAsync();
+                resultList.Add("Updated successfully");
+            }
             return resultList;
         }
 

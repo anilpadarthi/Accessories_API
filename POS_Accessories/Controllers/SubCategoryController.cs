@@ -17,8 +17,8 @@ namespace POS_Accessories.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("GetPagedCategories")]
-        public async Task<IActionResult> GetPagedCategories(int? pageNo, int? pageSize, string? searchText)
+        [HttpGet("GetByPaging")]
+        public async Task<IActionResult> GetByPaging(int? pageNo, int? pageSize, string? searchText)
         {
             GetPagedRequest request = new GetPagedRequest();
             //request.mode = string.IsNullOrEmpty(searchText) ? DbActions.GetAll : DbActions.Search;
@@ -29,35 +29,35 @@ namespace POS_Accessories.Controllers
             return Json(result);
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var result = await _service.GetAllSubCategoriesAsync();
             return Json(result);
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {           
             var result = await _service.GetSubCategoryAsync(id);
             return Json(result);
         }
 
-        [HttpPost("Create")]
+        [HttpPost]
         public async Task<IActionResult> Create(SubCategory request)
         {
             var result = await _service.CreateSubCategoryAsync(request);
             return Json(result);
         }
 
-        [HttpPut("Update")]
+        [HttpPut]
         public async Task<IActionResult> Update(SubCategory request)
         {
             var result = await _service.UpdateSubCategoryAsync(request);
             return Json(result);
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _service.DeleteSubCategoryAsync(id);

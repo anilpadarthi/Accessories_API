@@ -11,13 +11,10 @@ namespace POS_Accessories.Data.Repository.Repositories
         {
         }
 
-        public async Task<IEnumerable<string>> CreateCategoryAsync(Category request)
+        public async Task CreateCategoryAsync(Category request)
         {
             _context.Add(request);
             await _context.SaveChangesAsync();
-            List<string> resultList = new List<string>();
-            resultList.Add("Created successfully");
-            return resultList;
         }
 
         public async Task<IEnumerable<string>> DeleteCategoryAsync(int categoryId)
@@ -30,14 +27,12 @@ namespace POS_Accessories.Data.Repository.Repositories
             return resultList;
         }
 
-        public async Task<IEnumerable<string>> UpdateCategoryAsync(Category request)
+        public async Task UpdateCategoryAsync(Category request)
         {
-            //var category = await GetCategoryAsync(request.CategoryId);
-            //category.CategoryName = request.CategoryName;
+            var category = await _context.Set<Category>().Where(w => w.CategoryId == request.CategoryId).FirstOrDefaultAsync();
+            category.CategoryName = request.CategoryName;
+            category.Image = request.Image;
             await _context.SaveChangesAsync();
-            List<string> resultList = new List<string>();
-            resultList.Add("Updated successfully");
-            return resultList;
         }
 
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
@@ -48,8 +43,16 @@ namespace POS_Accessories.Data.Repository.Repositories
 
         public async Task<Category> GetCategoryAsync(int categoryId)
         {
-            var result = await _context.Set<Category>().Where(w => w.CategoryId == categoryId).FirstOrDefaultAsync();
-            return result;
+            return await _context.Set<Category>()
+                .Where(w => w.CategoryId == categoryId)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<Category> GetCategoryByNameAsync(string categoryName)
+        {
+            return await _context.Set<Category>()
+                .Where(w => w.CategoryName.ToUpper() == categoryName.ToUpper())
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Category>> GetPagedCategories(GetPagedRequest request)

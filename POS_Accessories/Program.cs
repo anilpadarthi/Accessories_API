@@ -58,6 +58,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILookupService, LookupService>();
 
 
 
@@ -70,6 +71,7 @@ builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ILookupRepository, LookupRepository>();
 
 
 

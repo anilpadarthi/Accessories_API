@@ -25,7 +25,7 @@ namespace POS_Accessories.Business.Services
                 {
                     response.data = "Category name already exist";
                     response.statusCode = HttpStatusCode.Conflict;
-                    response.status = true;
+                    response.status = false;
                 }
                 else
                 {
@@ -58,7 +58,7 @@ namespace POS_Accessories.Business.Services
                 {
                     response.message = "Category name already exist";
                     response.statusCode = HttpStatusCode.Conflict;
-                    response.status = true;
+                    response.status = false;
                 }
                 else
                 {

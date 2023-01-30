@@ -3,14 +3,14 @@ using POS_Accessories.Models.Request;
 
 namespace POS_Accessories.Data.Repository.Interfaces
 {
-    public interface ICategoryRepository: IRepository
+    public interface ICategoryRepository : IRepository
     {
-        Task CreateCategoryAsync(Category request);
-        Task UpdateCategoryAsync(Category request);
-        Task<IEnumerable<string>> DeleteCategoryAsync(int categoryId);
-        Task<Category> GetCategoryAsync(int categoryId);
-        Task<Category> GetCategoryByNameAsync(string categoryName);
-        Task<IEnumerable<Category>> GetAllCategoriesAsync();
-        Task<IEnumerable<Category>> GetPagedCategories(GetPagedRequest request);
+        Task CreateAsync(Category request);
+        Task UpdateAsync(Category request);
+        Task UpdateStatusAsync(int categoryId, string status);
+        Task<Category> GetByIdAsync(int categoryId);
+        Task<Category> GetByNameAsync(string categoryName);
+        Task<IEnumerable<Category>> GetAllAsync();
+        Task<IEnumerable<Category>> GetByPagingAsync(GetPagedRequest request);
     }
 }

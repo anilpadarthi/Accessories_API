@@ -11,10 +11,52 @@ namespace POS_Accessories.Data.Repository.Repositories
         {
         }
 
-        public async Task<IEnumerable<Product>> GetAllProductsAsync()
+        public async Task CreateAsync(Product request)
         {
-            var resultList = await _context.Set<Product>().ToListAsync();
-            return resultList;
+            _context.Add(request);
+            await _context.SaveChangesAsync();
+        }
+        public async Task UpdateAsync(Product request)
+        {
+            var dbRecord = await _context.Set<Product>().Where(w => w.CategoryId == request.CategoryId).FirstOrDefaultAsync();
+            dbRecord.ProductName = request.ProductName;
+            dbRecord.ProductCode = request.ProductCode;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateStatusAsync(int id, string status)
+        {
+            var dbRecord = await GetByIdAsync(id);
+            dbRecord.Status = status;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetAllAsync()
+        {
+            return await _context.Set<Product>()
+                .Where(cat => cat.Status != "D")
+                .ToListAsync();
+        }
+
+        public async Task<Product> GetByIdAsync(int productId)
+        {
+            return await _context.Set<Product>()
+                .Where(w => w.ProductId == productId)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<Product> GetByNameAsync(string productName)
+        {
+            return await _context.Set<Product>()
+                .Where(w => w.ProductName.ToUpper() == productName.ToUpper())
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetByPagingAsync(GetPagedRequest request)
+        {
+            return await _context.Set<Product>()
+                .Where(w => w.Status != "D")
+                .ToListAsync();
         }
 
         public async Task<Product> GetProductAsync(int productId)
@@ -29,13 +71,6 @@ namespace POS_Accessories.Data.Repository.Repositories
                 .FirstOrDefaultAsync();
             return result;
         }
-
-        public async Task<IEnumerable<Product>> GetPagedProductsAsync(GetPagedRequest request)
-        {
-            var resultList = await _context.Set<Product>().ToListAsync();
-            return resultList;
-        }
-
 
     }
 }

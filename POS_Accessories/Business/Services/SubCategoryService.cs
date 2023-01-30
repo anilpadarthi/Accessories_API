@@ -1,7 +1,10 @@
-﻿using POS_Accessories.Business.Interfaces;
+﻿using POS_Accessories.Business.Helper;
+using POS_Accessories.Business.Interfaces;
 using POS_Accessories.Data.Repository.Interfaces;
 using POS_Accessories.Models;
 using POS_Accessories.Models.Request;
+using POS_Accessories.Models.Response;
+using System.Net;
 
 namespace POS_Accessories.Business.Services
 {
@@ -13,38 +16,107 @@ namespace POS_Accessories.Business.Services
         {
             _subCategoryRepository = subCategoryRepository;
         }
-        public async Task<IEnumerable<string>> CreateSubCategoryAsync(SubCategory request)
-        {
-            return await _subCategoryRepository.CreateSubCategoryAsync(request);
-        }
 
-        public async Task<IEnumerable<string>> DeleteSubCategoryAsync(int categoryId)
+        public async Task<CommonResponse> CreateAsync(SubCategory request)
         {
-            return await _subCategoryRepository.DeleteSubCategoryAsync(categoryId);
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var result = await _subCategoryRepository.GetByNameAsync(request.SubCategoryName);
+                if (result != null)
+                {
+                    response = Utility.CreateResponse("Name already exist", HttpStatusCode.Conflict);
+                }
+                else
+                {
+                    request.Status = "A";
+                    await _subCategoryRepository.CreateAsync(request);
+                    response = Utility.CreateResponse("Created successfully", HttpStatusCode.Created);
+                }
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
         }
-
-        public async Task<IEnumerable<string>> UpdateSubCategoryAsync(SubCategory request)
+        public async Task<CommonResponse> UpdateAsync(SubCategory request)
         {
-            var subCategory = await _subCategoryRepository.GetSubCategoryAsync(request.SubCategoryId);
-            subCategory.SubCategoryName = request.SubCategoryName;
-            subCategory.Image = request.Image;
-            subCategory.CategoryId = request.CategoryId;
-            return await _subCategoryRepository.UpdateSubCategoryAsync(request);
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var result = await _subCategoryRepository.GetByNameAsync(request.SubCategoryName);
+                if (result != null && result.SubCategoryId != request.SubCategoryId)
+                {
+                    response = Utility.CreateResponse("Name already exist", HttpStatusCode.Conflict);
+                }
+                else
+                {
+                    await _subCategoryRepository.UpdateAsync(request);
+                    response = Utility.CreateResponse("Updated successfully", HttpStatusCode.OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
         }
-
-        public async Task<IEnumerable<SubCategory>> GetAllSubCategoriesAsync()
+        public async Task<CommonResponse> UpdateStatusAsync(int id, string status)
         {
-            return await _subCategoryRepository.GetAllSubCategoriesAsync();
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                await _subCategoryRepository.UpdateStatusAsync(id, status);
+                response = Utility.CreateResponse("Updated successfully", HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
         }
-
-        public async Task<SubCategory> GetSubCategoryAsync(int categoryId)
+        public async Task<CommonResponse> GetAllAsync(int categoryId)
         {
-            return await _subCategoryRepository.GetSubCategoryAsync(categoryId);
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var result = await _subCategoryRepository.GetAllAsync(categoryId);
+                response = Utility.CreateResponse(result, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
         }
-
-        public async Task<IEnumerable<SubCategory>> GetPagedSubCategoriesAsync(GetPagedRequest request)
+        public async Task<CommonResponse> GetByIdAsync(int id)
         {
-            return await _subCategoryRepository.GetPagedSubCategoriesAsync(request);
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var result = await _subCategoryRepository.GetByIdAsync(id);
+                response = Utility.CreateResponse(result, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
+        }
+        public async Task<CommonResponse> GetByPagingAsync(GetPagedRequest request)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var result = await _subCategoryRepository.GetByPagingAsync(request);
+                response = Utility.CreateResponse(result, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
         }
     }
 }

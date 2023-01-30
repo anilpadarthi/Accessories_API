@@ -4,11 +4,11 @@ using POS_Accessories.Models.Response;
 
 namespace POS_Accessories.Business.Interfaces
 {
-    public interface ICategoryService
+    public interface IProductBundleService
     {
-        Task<CommonResponse> CreateAsync(Category request);
-        Task<CommonResponse> UpdateAsync(Category request);
-        Task<CommonResponse> UpdateStatusAsync(int categoryId, string status);
+        Task<CommonResponse> CreateAsync(ProductBundleMap request);
+        Task<CommonResponse> UpdateAsync(ProductBundleMap request);
+        Task<CommonResponse> DeleteAsync(int categoryId);
         Task<CommonResponse> GetByIdAsync(int categoryId);
         Task<CommonResponse> GetAllAsync();
         Task<CommonResponse> GetByPagingAsync(GetPagedRequest request);

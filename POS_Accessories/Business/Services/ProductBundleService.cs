@@ -8,30 +8,21 @@ using System.Net;
 
 namespace POS_Accessories.Business.Services
 {
-    public class ProductService : IProductService
+    public class ProductBundleService : IProductBundleService
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IProductBundleRepository _productBundleRepository;
 
-        public ProductService(IProductRepository ProductRepository)
+        public ProductBundleService(IProductBundleRepository productBundleRepository)
         {
-            _productRepository = ProductRepository;
+            _productBundleRepository = productBundleRepository;
         }
-        public async Task<CommonResponse> CreateAsync(Product request)
+        public async Task<CommonResponse> CreateAsync(ProductBundleMap request)
         {
             CommonResponse response = new CommonResponse();
             try
             {
-                var result = await _productRepository.GetByNameAsync(request.ProductName);
-                if (result != null)
-                {
-                    response = Utility.CreateResponse("Name already exist", HttpStatusCode.Conflict);
-                }
-                else
-                {
-                    request.Status = "A";
-                    await _productRepository.CreateAsync(request);
-                    response = Utility.CreateResponse("Created successfully", HttpStatusCode.Created);
-                }
+                await _productBundleRepository.CreateAsync(request);
+                response = Utility.CreateResponse("Created successfully", HttpStatusCode.Created);
             }
             catch (Exception ex)
             {
@@ -39,36 +30,12 @@ namespace POS_Accessories.Business.Services
             }
             return response;
         }
-
-        public async Task<CommonResponse> UpdateAsync(Product request)
+        public async Task<CommonResponse> UpdateAsync(ProductBundleMap request)
         {
             CommonResponse response = new CommonResponse();
             try
             {
-                var result = await _productRepository.GetByNameAsync(request.ProductName);
-                if (result != null && result.ProductId != request.ProductId)
-                {
-                    response = Utility.CreateResponse("Name already exist", HttpStatusCode.Conflict);
-                }
-                else
-                {
-                    await _productRepository.UpdateAsync(request);
-                    response = Utility.CreateResponse("Updated successfully", HttpStatusCode.OK);
-                }
-            }
-            catch (Exception ex)
-            {
-                response = response.HandleException(ex);
-            }
-            return response;
-        }
-
-        public async Task<CommonResponse> UpdateStatusAsync(int id, string status)
-        {
-            CommonResponse response = new CommonResponse();
-            try
-            {
-                await _productRepository.UpdateStatusAsync(id, status);
+                await _productBundleRepository.UpdateAsync(request);
                 response = Utility.CreateResponse("Updated successfully", HttpStatusCode.OK);
             }
             catch (Exception ex)
@@ -77,15 +44,26 @@ namespace POS_Accessories.Business.Services
             }
             return response;
         }
-
-
-
+        public async Task<CommonResponse> DeleteAsync(int categoryId)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                await _productBundleRepository.DeleteAsync(categoryId);
+                response = Utility.CreateResponse("Deleted successfully", HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
+        }
         public async Task<CommonResponse> GetAllAsync()
         {
             CommonResponse response = new CommonResponse();
             try
             {
-                var result = await _productRepository.GetAllAsync();
+                var result = await _productBundleRepository.GetAllAsync();
                 response = Utility.CreateResponse(result, HttpStatusCode.OK);
             }
             catch (Exception ex)
@@ -94,13 +72,12 @@ namespace POS_Accessories.Business.Services
             }
             return response;
         }
-
-        public async Task<CommonResponse> GetByIdAsync(int id)
+        public async Task<CommonResponse> GetByIdAsync(int categoryId)
         {
             CommonResponse response = new CommonResponse();
             try
             {
-                var result = await _productRepository.GetByIdAsync(id);
+                var result = await _productBundleRepository.GetByIdAsync(categoryId);
                 response = Utility.CreateResponse(result, HttpStatusCode.OK);
             }
             catch (Exception ex)
@@ -109,13 +86,12 @@ namespace POS_Accessories.Business.Services
             }
             return response;
         }
-
         public async Task<CommonResponse> GetByPagingAsync(GetPagedRequest request)
         {
             CommonResponse response = new CommonResponse();
             try
             {
-                var result = await _productRepository.GetByPagingAsync(request);
+                var result = await _productBundleRepository.GetByPagingAsync(request);
                 response = Utility.CreateResponse(result, HttpStatusCode.OK);
             }
             catch (Exception ex)
@@ -124,6 +100,5 @@ namespace POS_Accessories.Business.Services
             }
             return response;
         }
-
     }
 }

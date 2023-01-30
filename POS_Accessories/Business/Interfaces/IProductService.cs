@@ -1,40 +1,41 @@
 ﻿using POS_Accessories.Models;
 using POS_Accessories.Models.Request;
+using POS_Accessories.Models.Response;
 
 namespace POS_Accessories.Business.Interfaces
 {
     public interface IProductService
     {
         //Product
-        Task<IEnumerable<string>> CreateProductAsync(Product request);
-        Task<IEnumerable<string>> UpdateProductAsync(Product request);
-        Task<IEnumerable<string>> DeleteProductAsync(int ProductId);
-        Task<Product> GetProductAsync(int ProductId);
-        Task<IEnumerable<Product>> GetAllProductsAsync();
-        Task<IEnumerable<Product>> GetPagedProductsAsync(GetPagedRequest request);
+        Task<CommonResponse> CreateAsync(Product request);
+        Task<CommonResponse> UpdateAsync(Product request);
+        Task<CommonResponse> UpdateStatusAsync(int id, string status);
+        Task<CommonResponse> GetByIdAsync(int id);
+        Task<CommonResponse> GetAllAsync();
+        Task<CommonResponse> GetByPagingAsync(GetPagedRequest request);
 
-        //Product Price
-        Task<IEnumerable<string>> CreateProductPriceAsync(ProductPriceMap request);
-        Task<IEnumerable<string>> UpdateProductPriceAsync(ProductPriceMap request);
-        Task<IEnumerable<string>> DeleteProductPriceAsync(int productPriceId);
-        Task<IEnumerable<ProductPriceMap>> GetAllProductPricesAsync(int productId);
+        ////Product Price
+        //Task<CommonResponse> CreateProductPriceAsync(ProductPriceMap request);
+        //Task<CommonResponse> UpdateProductPriceAsync(ProductPriceMap request);
+        //Task<CommonResponse> DeleteProductPriceAsync(int productPriceId);
+        //Task<CommonResponse> GetAllProductPricesAsync(int productId);
 
-        //Product Bundle
-        Task<IEnumerable<string>> CreateProductBundleAsync(ProductBundleMap request);
-        Task<IEnumerable<string>> UpdateProductBundleAsync(ProductBundleMap request);
-        Task<IEnumerable<string>> DeleteProductBundleAsync(int productBundleId);
-        Task<IEnumerable<ProductPriceMap>> GetAllProductBundleAsync(int productId);
+        ////Product Bundle
+        //Task<CommonResponse> CreateProductBundleAsync(ProductBundleMap request);
+        //Task<CommonResponse> UpdateProductBundleAsync(ProductBundleMap request);
+        //Task<CommonResponse> DeleteProductBundleAsync(int productBundleId);
+        //Task<CommonResponse> GetAllProductBundleAsync(int productId);
 
-        //Product Size
-        Task<IEnumerable<string>> CreateProductSizeAsync(ProductSizeMap request);
-        Task<IEnumerable<string>> UpdateProductSizeAsync(ProductSizeMap request);
-        Task<IEnumerable<string>> DeleteProductSizeAsync(int productSizeId);
-        Task<IEnumerable<ProductSizeMap>> GetAllProductSizesAsync();
+        ////Product Size
+        //Task<CommonResponse> CreateProductSizeAsync(ProductSizeMap request);
+        //Task<CommonResponse> UpdateProductSizeAsync(ProductSizeMap request);
+        //Task<CommonResponse> DeleteProductSizeAsync(int productSizeId);
+        //Task<CommonResponse> GetAllProductSizesAsync();
 
-        //Product Colour
-        Task<IEnumerable<string>> CreateProductColourAsync(ProductColourMap request);
-        Task<IEnumerable<string>> UpdateProductColourAsync(ProductColourMap request);
-        Task<IEnumerable<string>> DeleteProductColourAsync(int productColourId);
-        Task<IEnumerable<ProductPriceMap>> GetAllProductColoursAsync();
+        ////Product Colour
+        //Task<CommonResponse> CreateProductColourAsync(ProductColourMap request);
+        //Task<CommonResponse> UpdateProductColourAsync(ProductColourMap request);
+        //Task<CommonResponse> DeleteProductColourAsync(int productColourId);
+        //Task<CommonResponse> GetAllProductColoursAsync();
     }
 }

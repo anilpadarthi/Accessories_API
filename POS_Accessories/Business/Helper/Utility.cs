@@ -7,7 +7,7 @@ namespace POS_Accessories.Business.Helper
 {
     public static class Utility
     {
-        
+
         public class SendMail
         {
 
@@ -85,23 +85,11 @@ namespace POS_Accessories.Business.Helper
 
         }
 
-        public static CommonResponse CreateResponse<T>(List<T> result)
+        public static CommonResponse CreateResponse(object result,HttpStatusCode statusCode)
         {
             CommonResponse response = new CommonResponse();
-            if (result != null && result.Count > 0)
-            {
-                response.data = result;
-                response.message = "Success";
-                response.statusCode = HttpStatusCode.OK;
-                response.status = true;
-                response.count = result.Count;
-            }
-            else
-            {
-                response.message = "No data found";
-                response.statusCode = HttpStatusCode.NoContent;
-                response.status = false;
-            }
+            response.data = result;
+            response.statusCode = statusCode;
             return response;
         }
 

@@ -29,14 +29,12 @@ namespace POS_Accessories.Business.Services
 
                     var token = createToken(user);
                     response.data = new { user, token };
-                    response.message = "Success";
                     response.statusCode = HttpStatusCode.OK;
                     response.status = true;
-                    response.count = 1;
                 }
                 else
                 {
-                    response.message = "You have entered an invalid username or password";
+                    response.data = "You have entered an invalid username or password";
                     response.statusCode = HttpStatusCode.NoContent;
                     response.status = false;
                 }

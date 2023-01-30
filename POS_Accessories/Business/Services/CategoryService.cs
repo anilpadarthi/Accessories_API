@@ -1,4 +1,5 @@
-﻿using POS_Accessories.Business.Interfaces;
+﻿using POS_Accessories.Business.Helper;
+using POS_Accessories.Business.Interfaces;
 using POS_Accessories.Data.Repository.Interfaces;
 using POS_Accessories.Models;
 using POS_Accessories.Models.Request;
@@ -15,25 +16,21 @@ namespace POS_Accessories.Business.Services
         {
             _categoryRepository = categoryRepository;
         }
-        public async Task<CommonResponse> CreateCategoryAsync(Category request)
+        public async Task<CommonResponse> CreateAsync(Category request)
         {
             CommonResponse response = new CommonResponse();
             try
             {
-                var result = await _categoryRepository.GetCategoryByNameAsync(request.CategoryName);
+                var result = await _categoryRepository.GetByNameAsync(request.CategoryName);
                 if (result != null)
                 {
-                    response.data = "Category name already exist";
-                    response.statusCode = HttpStatusCode.Conflict;
-                    response.status = true;
+                    response = Utility.CreateResponse("Name already exist", HttpStatusCode.Conflict);
                 }
                 else
                 {
-                    await _categoryRepository.CreateCategoryAsync(request);
-                    response.data = "Created successfully";
-                    response.statusCode = HttpStatusCode.Created;
-                    response.status = true;
-                    response.count = 1;
+                    request.Status = "A";
+                    await _categoryRepository.CreateAsync(request);
+                    response = Utility.CreateResponse("Created successfully", HttpStatusCode.Created);
                 }
             }
             catch (Exception ex)
@@ -42,30 +39,20 @@ namespace POS_Accessories.Business.Services
             }
             return response;
         }
-
-        public async Task<IEnumerable<string>> DeleteCategoryAsync(int categoryId)
-        {
-            return await _categoryRepository.DeleteCategoryAsync(categoryId);
-        }
-
-        public async Task<CommonResponse> UpdateCategoryAsync(Category request)
+        public async Task<CommonResponse> UpdateAsync(Category request)
         {
             CommonResponse response = new CommonResponse();
             try
             {
-                var result = await _categoryRepository.GetCategoryByNameAsync(request.CategoryName);
-                if (result != null)
+                var result = await _categoryRepository.GetByNameAsync(request.CategoryName);
+                if (result != null && result.CategoryId != request.CategoryId)
                 {
-                    response.message = "Category name already exist";
-                    response.statusCode = HttpStatusCode.Conflict;
-                    response.status = true;
+                    response = Utility.CreateResponse("Name already exist", HttpStatusCode.Conflict);
                 }
                 else
                 {
-                    await _categoryRepository.UpdateCategoryAsync(request);
-                    response.message = "Updated successfully";
-                    response.statusCode = HttpStatusCode.OK;
-                    response.status = true;
+                    await _categoryRepository.UpdateAsync(request);
+                    response = Utility.CreateResponse("Updated successfully", HttpStatusCode.OK);
                 }
             }
             catch (Exception ex)
@@ -74,20 +61,62 @@ namespace POS_Accessories.Business.Services
             }
             return response;
         }
-
-        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
+        public async Task<CommonResponse> UpdateStatusAsync(int categoryId, string status)
         {
-            return await _categoryRepository.GetAllCategoriesAsync();
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                await _categoryRepository.UpdateStatusAsync(categoryId, status);
+                response = Utility.CreateResponse("Updated successfully", HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
         }
 
-        public async Task<Category> GetCategoryAsync(int categoryId)
+        public async Task<CommonResponse> GetAllAsync()
         {
-            return await _categoryRepository.GetCategoryAsync(categoryId);
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var result = await _categoryRepository.GetAllAsync();
+                response = Utility.CreateResponse(result, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
         }
-
-        public async Task<IEnumerable<Category>> GetPagedCategories(GetPagedRequest request)
+        public async Task<CommonResponse> GetByIdAsync(int categoryId)
         {
-            return await _categoryRepository.GetPagedCategories(request);
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var result = await _categoryRepository.GetByIdAsync(categoryId);
+                response = Utility.CreateResponse(result, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
+        }
+        public async Task<CommonResponse> GetByPagingAsync(GetPagedRequest request)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var result = await _categoryRepository.GetByPagingAsync(request);
+                response = Utility.CreateResponse(result, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
         }
     }
 }

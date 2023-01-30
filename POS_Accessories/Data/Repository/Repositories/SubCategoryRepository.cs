@@ -11,76 +11,56 @@ namespace POS_Accessories.Data.Repository.Repositories
         {
         }
 
-        public async Task<IEnumerable<string>> CreateSubCategoryAsync(SubCategory request)
+        public async Task CreateAsync(SubCategory request)
         {
-            List<string> resultList = new List<string>();
-            var category = await _context.Set<SubCategory>()
-                          .Where(w => w.CategoryId == request.CategoryId && w.SubCategoryName.ToUpper() == request.SubCategoryName.ToUpper())
-                          .FirstOrDefaultAsync();
-
-            if (category != null)
-            {
-                resultList.Add("Sub category name already exist");
-            }
-            else
-            {
-                _context.Add(request);
-                await _context.SaveChangesAsync();
-                resultList.Add("Created successfully");
-            }
-            return resultList;
-        }
-
-        public async Task<IEnumerable<string>> DeleteSubCategoryAsync(int categoryId)
-        {
-            var category = await GetSubCategoryAsync(categoryId);
-            category.Status = "D";
+            _context.Add(request);
             await _context.SaveChangesAsync();
-            List<string> resultList = new List<string>();
-            resultList.Add("Deleted successfully");
-            return resultList;
         }
-
-        public async Task<IEnumerable<string>> UpdateSubCategoryAsync(SubCategory request)
+        public async Task UpdateAsync(SubCategory request)
         {
-            List<string> resultList = new List<string>();
-            var subCategory = await _context.Set<SubCategory>()
-                .Where(w => w.CategoryId == request.CategoryId && w.SubCategoryName.ToUpper() == request.SubCategoryName.ToUpper())
+            var dbRecord = await _context.Set<SubCategory>()
+                .Where(w => w.SubCategoryId == request.SubCategoryId)
                 .FirstOrDefaultAsync();
 
-            if (subCategory != null && subCategory.CategoryId == request.CategoryId && subCategory.SubCategoryId != request.SubCategoryId)
-            {
-                resultList.Add("Sub category name already exist");
-            }
-            else
-            {
-                subCategory = await _context.Set<SubCategory>().Where(w => w.SubCategoryId == request.SubCategoryId).FirstOrDefaultAsync();
-                subCategory.SubCategoryName = request.SubCategoryName;
-                subCategory.Image = request.Image;
-                await _context.SaveChangesAsync();
-                resultList.Add("Updated successfully");
-            }
-            return resultList;
+            dbRecord.SubCategoryName = request.SubCategoryName;
+            dbRecord.Image = request.Image;
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<SubCategory>> GetAllSubCategoriesAsync()
+        public async Task UpdateStatusAsync(int id, string status)
         {
-            var resultList = await _context.Set<SubCategory>().ToListAsync();
-            return resultList;
+            var dbRecord = await GetByIdAsync(id);
+            dbRecord.Status = status;
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<SubCategory> GetSubCategoryAsync(int categoryId)
+        public async Task<IEnumerable<SubCategory>> GetAllAsync(int categoryId)
         {
-            var result = await _context.Set<SubCategory>().Where(w => w.CategoryId == categoryId).FirstOrDefaultAsync();
-            return result;
+            return await _context.Set<SubCategory>()
+                .Where(cat => cat.Status != "D" && cat.CategoryId == categoryId)
+                .ToListAsync();
         }
 
-        public async Task<IEnumerable<SubCategory>> GetPagedSubCategoriesAsync(GetPagedRequest request)
+        public async Task<SubCategory> GetByIdAsync(int subCategoryId)
         {
-            var resultList = await _context.Set<SubCategory>().ToListAsync();
-            return resultList;
+            return await _context.Set<SubCategory>()
+                .Where(w => w.SubCategoryId == subCategoryId)
+                .FirstOrDefaultAsync();
         }
 
+        public async Task<SubCategory> GetByNameAsync(string subCategoryName)
+        {
+            return await _context.Set<SubCategory>()
+                .Where(w => w.SubCategoryName.ToUpper() == subCategoryName.ToUpper())
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<SubCategory>> GetByPagingAsync(GetPagedRequest request)
+        {
+            return await _context.Set<SubCategory>()
+                .Where(cat => cat.Status != "D")
+                .ToListAsync();
+        }
 
     }
 }

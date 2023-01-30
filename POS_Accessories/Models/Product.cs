@@ -34,7 +34,6 @@ public partial class Product
     public int? CreatedBy { get; set; }
 
     public int? ModifiedBy { get; set; }
-    public bool IsActive { get; set; }
 
     public virtual ICollection<ProductBundleMap> ProductBundleMaps { get; } = new List<ProductBundleMap>();
 

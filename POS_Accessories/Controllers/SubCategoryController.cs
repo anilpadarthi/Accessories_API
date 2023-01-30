@@ -25,42 +25,49 @@ namespace POS_Accessories.Controllers
             request.pageNo = pageNo ?? int.Parse(_configuration["PageNumber"]);
             request.pageSize = pageSize ?? int.Parse(_configuration["PageSize"]);
             request.searchText = searchText;
-            var result = await _service.GetAllSubCategoriesAsync();
+            var result = await _service.GetByPagingAsync(request);
+            return Json(result);
+        }
+
+        [HttpPost("GetByPaging")]
+        public async Task<IActionResult> GetByPaging(GetPagedRequest request)
+        {
+            var result = await _service.GetByPagingAsync(request);
             return Json(result);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int categoryId)
         {
-            var result = await _service.GetAllSubCategoriesAsync();
+            var result = await _service.GetAllAsync(categoryId);
             return Json(result);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
-        {           
-            var result = await _service.GetSubCategoryAsync(id);
+        {
+            var result = await _service.GetByIdAsync(id);
             return Json(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(SubCategory request)
         {
-            var result = await _service.CreateSubCategoryAsync(request);
+            var result = await _service.CreateAsync(request);
             return Json(result);
         }
 
         [HttpPut]
         public async Task<IActionResult> Update(SubCategory request)
         {
-            var result = await _service.UpdateSubCategoryAsync(request);
+            var result = await _service.UpdateAsync(request);
             return Json(result);
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
+        [HttpPut("UpdateStatus")]
+        public async Task<IActionResult> UpdateStatus(SubCategory request)
         {
-            var result = await _service.DeleteSubCategoryAsync(id);
+            var result = await _service.UpdateStatusAsync(request.SubCategoryId, request.Status);
             return Json(result);
         }
     }

@@ -5,8 +5,12 @@ namespace POS_Accessories.Data.Repository.Interfaces
 {
     public interface IProductRepository: IRepository
     {
-        Task<Product> GetProductAsync(int ProductId);
-        Task<IEnumerable<Product>> GetAllProductsAsync();
-        Task<IEnumerable<Product>> GetPagedProductsAsync(GetPagedRequest request);
+        Task CreateAsync(Product request);
+        Task UpdateAsync(Product request);
+        Task UpdateStatusAsync(int id, string status);
+        Task<Product> GetByIdAsync(int productId);
+        Task<Product> GetByNameAsync(string productName);
+        Task<IEnumerable<Product>> GetAllAsync();
+        Task<IEnumerable<Product>> GetByPagingAsync(GetPagedRequest request);
     }
 }

@@ -7,18 +7,18 @@ namespace POS_Accessories.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : BaseController
+    public class ProductPriceController : BaseController
     {
-        private readonly ICategoryService _service;
+        private readonly IProductPriceService _service;
         private readonly IConfiguration _configuration;
-        public CategoryController(ICategoryService service, IConfiguration configuration)
+        public ProductPriceController(IProductPriceService service, IConfiguration configuration)
         {
             _service = service;
             _configuration = configuration;
         }
 
-        [HttpGet("GetByPaging")]
-        public async Task<IActionResult> GetByPaging(int? pageNo, int? pageSize, string? searchText)
+        [HttpGet("GetPagedCategories")]
+        public async Task<IActionResult> GetPagedCategoriesAsync(int? pageNo, int? pageSize, string? searchText)
         {
             GetPagedRequest request = new GetPagedRequest();
             //request.mode = string.IsNullOrEmpty(searchText) ? DbActions.GetAll : DbActions.Search;
@@ -36,38 +36,38 @@ namespace POS_Accessories.Controllers
             return Json(result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll(int productId)
         {
-            var result = await _service.GetAllAsync();
+            var result = await _service.GetAllAsync(productId);
             return Json(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetById")]
         public async Task<IActionResult> GetById(int id)
-        {
+        {           
             var result = await _service.GetByIdAsync(id);
             return Json(result);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(Category request)
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create(ProductPriceMap request)
         {
             var result = await _service.CreateAsync(request);
             return Json(result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update(Category request)
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update(ProductPriceMap request)
         {
             var result = await _service.UpdateAsync(request);
             return Json(result);
         }
 
-        [HttpPut("UpdateStatus")]
-        public async Task<IActionResult> UpdateStatus(Category request)
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = await _service.UpdateStatusAsync(request.CategoryId, request.Status);
+            var result = await _service.DeleteAsync(id);
             return Json(result);
         }
     }

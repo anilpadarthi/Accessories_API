@@ -5,7 +5,7 @@ namespace POS_Accessories.Models;
 
 public partial class ProductPriceMap
 {
-    public int ProductPriceId { get; set; }
+    public int ProductPriceMapId { get; set; }
 
     public decimal SalePrice { get; set; }
 

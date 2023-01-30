@@ -5,11 +5,14 @@ namespace POS_Accessories.Data.Repository.Interfaces
 {
     public interface ISubCategoryRepository: IRepository
     {
-        Task<IEnumerable<string>> CreateSubCategoryAsync(SubCategory request);
-        Task<IEnumerable<string>> UpdateSubCategoryAsync(SubCategory request);
-        Task<IEnumerable<string>> DeleteSubCategoryAsync(int categoryId);
-        Task<SubCategory> GetSubCategoryAsync(int categoryId);
-        Task<IEnumerable<SubCategory>> GetAllSubCategoriesAsync();
-        Task<IEnumerable<SubCategory>> GetPagedSubCategoriesAsync(GetPagedRequest request);
+        Task CreateAsync(SubCategory request);
+        Task UpdateAsync(SubCategory request);
+        Task UpdateStatusAsync(int id, string status);
+        Task<SubCategory> GetByIdAsync(int subCategoryId);
+        Task<SubCategory> GetByNameAsync(string subCategoryName);
+        Task<IEnumerable<SubCategory>> GetAllAsync(int categoryId);
+        Task<IEnumerable<SubCategory>> GetByPagingAsync(GetPagedRequest request);
+
+
     }
 }

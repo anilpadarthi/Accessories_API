@@ -1,15 +1,16 @@
 ﻿using POS_Accessories.Models;
 using POS_Accessories.Models.Request;
+using POS_Accessories.Models.Response;
 
 namespace POS_Accessories.Business.Interfaces
 {
     public interface ISubCategoryService
     {
-        Task<IEnumerable<string>> CreateSubCategoryAsync(SubCategory request);
-        Task<IEnumerable<string>> UpdateSubCategoryAsync(SubCategory request);
-        Task<IEnumerable<string>> DeleteSubCategoryAsync(int categoryId);
-        Task<SubCategory> GetSubCategoryAsync(int categoryId);
-        Task<IEnumerable<SubCategory>> GetAllSubCategoriesAsync();
-        Task<IEnumerable<SubCategory>> GetPagedSubCategoriesAsync(GetPagedRequest request);
+        Task<CommonResponse> CreateAsync(SubCategory request);
+        Task<CommonResponse> UpdateAsync(SubCategory request);
+        Task<CommonResponse> UpdateStatusAsync(int id, string status);
+        Task<CommonResponse> GetByIdAsync(int id);
+        Task<CommonResponse> GetAllAsync(int categoryId);
+        Task<CommonResponse> GetByPagingAsync(GetPagedRequest request);
     }
 }

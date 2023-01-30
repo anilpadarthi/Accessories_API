@@ -20,7 +20,7 @@ namespace POS_Accessories.Controllers
             return Json(result);
         }
 
-        [HttpGet("{id}/SubCategories")]
+        [HttpGet("{categoryId}/SubCategories")]
         public async Task<IActionResult> GetSubCategories(int categoryId)
         {
             var result = await _service.GetSubCategories(categoryId);

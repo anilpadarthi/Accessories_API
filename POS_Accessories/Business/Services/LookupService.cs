@@ -1,11 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using POS_Accessories.Business.Helper;
 using POS_Accessories.Business.Interfaces;
 using POS_Accessories.Data.Repository.Interfaces;
-using POS_Accessories.Models;
 using POS_Accessories.Models.Response;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net;
-using System.Security.Claims;
 
 namespace POS_Accessories.Business.Services
 {
@@ -24,11 +21,7 @@ namespace POS_Accessories.Business.Services
             try
             {
                 var list = await _repository.GetCategories();
-                response.data = list;
-                response.message = "Success";
-                response.statusCode = HttpStatusCode.OK;
-                response.status = true;
-                response.count = 1;
+                response = Utility.CreateResponse(list, HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
@@ -43,11 +36,7 @@ namespace POS_Accessories.Business.Services
             try
             {
                 var list = await _repository.GetSubCategories(categoryId);
-                response.data = list;
-                response.message = "Success";
-                response.statusCode = HttpStatusCode.OK;
-                response.status = true;
-                response.count = 1;
+                response = Utility.CreateResponse(list, HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
@@ -62,11 +51,7 @@ namespace POS_Accessories.Business.Services
             try
             {
                 var list = await _repository.GetAvailableColours();
-                response.data = list;
-                response.message = "Success";
-                response.statusCode = HttpStatusCode.OK;
-                response.status = true;
-                response.count = 1;
+                response = Utility.CreateResponse(list, HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
@@ -81,11 +66,7 @@ namespace POS_Accessories.Business.Services
             try
             {
                 var list = await _repository.GetAvailableSizes();
-                response.data = list;
-                response.message = "Success";
-                response.statusCode = HttpStatusCode.OK;
-                response.status = true;
-                response.count = 1;
+                response = Utility.CreateResponse(list, HttpStatusCode.OK);
             }
             catch (Exception ex)
             {

@@ -300,7 +300,7 @@ public partial class AccessoriesDbContext : DbContext
 
         modelBuilder.Entity<ProductPriceMap>(entity =>
         {
-            entity.HasKey(e => e.ProductPriceId).HasName("PK_ProductPrice");
+            entity.HasKey(e => e.ProductPriceMapId).HasName("PK_ProductPrice");
 
             entity.ToTable("ProductPriceMap");
 

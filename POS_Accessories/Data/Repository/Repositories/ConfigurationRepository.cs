@@ -52,7 +52,7 @@ namespace POS_Accessories.Data.Repository.Repositories
             return result;
         }
 
-        public async Task<IEnumerable<Configuration>> GetPagedConfigurationsAsync(GetPagedRequest request)
+        public async Task<IEnumerable<Configuration>> GetPagedConfigurationsAsync(GetPagedSearch request)
         {
             var resultList = await _context.Set<Configuration>().ToListAsync();
             return resultList;

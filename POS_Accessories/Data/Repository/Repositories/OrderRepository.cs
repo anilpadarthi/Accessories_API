@@ -27,7 +27,7 @@ namespace POS_Accessories.Data.Repository.Repositories
             return result;
         }
 
-        public async Task<IEnumerable<Order>> GetPagedOrdersAsync(GetPagedRequest request)
+        public async Task<IEnumerable<Order>> GetPagedOrdersAsync(GetPagedSearch request)
         {
             var result = await _context.Set<Order>().ToListAsync();
             return result;

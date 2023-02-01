@@ -44,7 +44,7 @@ namespace POS_Accessories.Business.Services
             return await _couponRepository.GetCouponAsync(CouponId);
         }
 
-        public async Task<IEnumerable<Coupon>> GetPagedCouponsAsync(GetPagedRequest request)
+        public async Task<IEnumerable<Coupon>> GetPagedCouponsAsync(GetPagedSearch request)
         {
             return await _couponRepository.GetPagedCouponsAsync(request);
         }

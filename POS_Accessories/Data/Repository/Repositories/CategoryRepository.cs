@@ -54,11 +54,34 @@ namespace POS_Accessories.Data.Repository.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Category>> GetByPagingAsync(GetPagedRequest request)
+        public async Task<IEnumerable<Category>> GetByPagingAsync(GetPagedSearch request)
         {
-            return await _context.Set<Category>()
-                .Where(w => w.Status != "D")
+            var query = _context.Set<Category>()
+                .Where(w => w.Status != "D");
+
+            if (!string.IsNullOrEmpty(request.searchText))
+            {
+                query = query.Where(w => w.CategoryName.Contains(request.searchText));
+            }
+
+            var result = await query
+                .Skip((request.pageNo - 1) * request.pageSize)
+                .Take(request.pageSize)
                 .ToListAsync();
+
+            return result;
+        }
+
+        public async Task<int> GetTotalCountAsync(GetPagedSearch request)
+        {
+            var query = _context.Set<Category>()
+               .Where(w => w.Status != "D");
+
+            if (!string.IsNullOrEmpty(request.searchText))
+            {
+                query = query.Where(w => w.CategoryName.Contains(request.searchText));
+            }
+            return await query.CountAsync();
         }
 
 

@@ -11,7 +11,7 @@ namespace POS_Accessories.Business.Interfaces
         Task<IEnumerable<string>> DeleteOrderAsync(int orderId);
         Task<Order> GetOrderAsync(int orderId);
         Task<IEnumerable<Order>> GetAllOrdersAsync();
-        Task<IEnumerable<Order>> GetPagedOrdersAsync(GetPagedRequest request);
+        Task<IEnumerable<Order>> GetPagedOrdersAsync(GetPagedSearch request);
         Task<IEnumerable<OrderDetailsMap>> GetOrderDetailsAsync(int orderId);
         Task<OrderDetailsMap> GetOrderDetailAsync(int orderDetailId);
         Task<IEnumerable<OrderDetailsMap>> GetPagedOrderDetailsAsync(int orderId);

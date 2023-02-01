@@ -54,7 +54,7 @@ namespace POS_Accessories.Data.Repository.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<ProductPriceMap>> GetByPagingAsync(GetPagedRequest request)
+        public async Task<IEnumerable<ProductPriceMap>> GetByPagingAsync(GetPagedSearch request)
         {
             return await _context.Set<ProductPriceMap>()
                 .ToListAsync();

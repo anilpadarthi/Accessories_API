@@ -11,6 +11,6 @@ namespace POS_Accessories.Business.Interfaces
         Task<CommonResponse> DeleteAsync(int productPriceMapId);
         Task<CommonResponse> GetByIdAsync(int productPriceMapId);
         Task<CommonResponse> GetAllAsync(int productId);
-        Task<CommonResponse> GetByPagingAsync(GetPagedRequest request);
+        Task<CommonResponse> GetByPagingAsync(GetPagedSearch request);
     }
 }

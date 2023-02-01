@@ -55,7 +55,7 @@ namespace POS_Accessories.Data.Repository.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<SubCategory>> GetByPagingAsync(GetPagedRequest request)
+        public async Task<IEnumerable<SubCategory>> GetByPagingAsync(GetPagedSearch request)
         {
             return await _context.Set<SubCategory>()
                 .Where(cat => cat.Status != "D")

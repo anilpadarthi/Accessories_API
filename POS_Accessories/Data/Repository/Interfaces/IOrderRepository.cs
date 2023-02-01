@@ -7,7 +7,7 @@ namespace POS_Accessories.Data.Repository.Interfaces
     {
         Task<Order> GetOrderAsync(int orderId);
         Task<IEnumerable<Order>> GetAllOrdersAsync();
-        Task<IEnumerable<Order>> GetPagedOrdersAsync(GetPagedRequest request);
+        Task<IEnumerable<Order>> GetPagedOrdersAsync(GetPagedSearch request);
         Task<IEnumerable<OrderDetailsMap>> GetOrderDetailsAsync(int orderId);
         Task<OrderDetailsMap> GetOrderDetailAsync(int orderDetailId);
         Task<IEnumerable<OrderDetailsMap>> GetPagedOrderDetailsAsync(int orderId);

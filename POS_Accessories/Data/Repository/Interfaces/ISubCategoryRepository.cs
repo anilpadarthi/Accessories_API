@@ -11,7 +11,7 @@ namespace POS_Accessories.Data.Repository.Interfaces
         Task<SubCategory> GetByIdAsync(int subCategoryId);
         Task<SubCategory> GetByNameAsync(string subCategoryName);
         Task<IEnumerable<SubCategory>> GetAllAsync(int categoryId);
-        Task<IEnumerable<SubCategory>> GetByPagingAsync(GetPagedRequest request);
+        Task<IEnumerable<SubCategory>> GetByPagingAsync(GetPagedSearch request);
 
 
     }

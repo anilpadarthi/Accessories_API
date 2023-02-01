@@ -52,7 +52,7 @@ namespace POS_Accessories.Data.Repository.Repositories
             return result;
         }
 
-        public async Task<IEnumerable<Coupon>> GetPagedCouponsAsync(GetPagedRequest request)
+        public async Task<IEnumerable<Coupon>> GetPagedCouponsAsync(GetPagedSearch request)
         {
             var resultList = await _context.Set<Coupon>().ToListAsync();
             return resultList;

@@ -17,20 +17,9 @@ namespace POS_Accessories.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("GetByPaging")]
-        public async Task<IActionResult> GetByPaging(int? pageNo, int? pageSize, string? searchText)
-        {
-            GetPagedRequest request = new GetPagedRequest();
-            //request.mode = string.IsNullOrEmpty(searchText) ? DbActions.GetAll : DbActions.Search;
-            request.pageNo = pageNo ?? int.Parse(_configuration["PageNumber"]);
-            request.pageSize = pageSize ?? int.Parse(_configuration["PageSize"]);
-            request.searchText = searchText;
-            var result = await _service.GetByPagingAsync(request);
-            return Json(result);
-        }
 
         [HttpPost("GetByPaging")]
-        public async Task<IActionResult> GetByPaging(GetPagedRequest request)
+        public async Task<IActionResult> GetByPaging(GetPagedSearch request)
         {
             var result = await _service.GetByPagingAsync(request);
             return Json(result);

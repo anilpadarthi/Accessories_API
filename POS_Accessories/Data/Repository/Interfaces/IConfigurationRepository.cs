@@ -10,6 +10,6 @@ namespace POS_Accessories.Data.Repository.Interfaces
         Task<IEnumerable<string>> DeleteConfigurationAsync(int ConfigurationId);
         Task<Configuration> GetConfigurationAsync(int ConfigurationId);
         Task<IEnumerable<Configuration>> GetAllConfigurationsAsync();
-        Task<IEnumerable<Configuration>> GetPagedConfigurationsAsync(GetPagedRequest request);
+        Task<IEnumerable<Configuration>> GetPagedConfigurationsAsync(GetPagedSearch request);
     }
 }

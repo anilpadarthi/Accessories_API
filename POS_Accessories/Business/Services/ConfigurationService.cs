@@ -44,7 +44,7 @@ namespace POS_Accessories.Business.Services
             return await _configurationRepository.GetConfigurationAsync(ConfigurationId);
         }
 
-        public async Task<IEnumerable<Configuration>> GetPagedConfigurationsAsync(GetPagedRequest request)
+        public async Task<IEnumerable<Configuration>> GetPagedConfigurationsAsync(GetPagedSearch request)
         {
             return await _configurationRepository.GetPagedConfigurationsAsync(request);
         }

@@ -20,7 +20,7 @@ namespace POS_Accessories.Controllers
         [HttpGet("GetPagedCategories")]
         public async Task<IActionResult> GetPagedCategories(int? pageNo, int? pageSize, string? searchText)
         {
-            GetPagedRequest request = new GetPagedRequest();
+            GetPagedSearch request = new GetPagedSearch();
             //request.mode = string.IsNullOrEmpty(searchText) ? DbActions.GetAll : DbActions.Search;
             request.pageNo = pageNo ?? int.Parse(_configuration["PageNumber"]);
             request.pageSize = pageSize ?? int.Parse(_configuration["PageSize"]);

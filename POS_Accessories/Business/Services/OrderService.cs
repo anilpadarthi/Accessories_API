@@ -84,7 +84,7 @@ namespace POS_Accessories.Business.Services
             return await _orderRepository.GetOrderAsync(orderId);
         }
 
-        public async Task<IEnumerable<Order>> GetPagedOrdersAsync(GetPagedRequest request)
+        public async Task<IEnumerable<Order>> GetPagedOrdersAsync(GetPagedSearch request)
         {
             return await _orderRepository.GetPagedOrdersAsync(request);
         }

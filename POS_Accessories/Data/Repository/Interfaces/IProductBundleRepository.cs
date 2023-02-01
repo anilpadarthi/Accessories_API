@@ -10,6 +10,6 @@ namespace POS_Accessories.Data.Repository.Interfaces
         Task DeleteAsync(int categoryId);
         Task<ProductBundleMap> GetByIdAsync(int categoryId);
         Task<IEnumerable<ProductBundleMap>> GetAllAsync();
-        Task<IEnumerable<ProductBundleMap>> GetByPagingAsync(GetPagedRequest request);
+        Task<IEnumerable<ProductBundleMap>> GetByPagingAsync(GetPagedSearch request);
     }
 }

@@ -10,6 +10,6 @@ namespace POS_Accessories.Data.Repository.Interfaces
         Task<IEnumerable<string>> DeleteCouponAsync(int CouponId);
         Task<Coupon> GetCouponAsync(int CouponId);
         Task<IEnumerable<Coupon>> GetAllCouponsAsync();
-        Task<IEnumerable<Coupon>> GetPagedCouponsAsync(GetPagedRequest request);
+        Task<IEnumerable<Coupon>> GetPagedCouponsAsync(GetPagedSearch request);
     }
 }

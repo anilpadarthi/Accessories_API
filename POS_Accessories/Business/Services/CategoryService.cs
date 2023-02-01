@@ -104,13 +104,16 @@ namespace POS_Accessories.Business.Services
             }
             return response;
         }
-        public async Task<CommonResponse> GetByPagingAsync(GetPagedRequest request)
+        public async Task<CommonResponse> GetByPagingAsync(GetPagedSearch request)
         {
             CommonResponse response = new CommonResponse();
             try
             {
-                var result = await _categoryRepository.GetByPagingAsync(request);
-                response = Utility.CreateResponse(result, HttpStatusCode.OK);
+                PagedResult pageResult = new PagedResult();
+                pageResult.Results = await _categoryRepository.GetByPagingAsync(request);
+                pageResult.TotalRecords = await _categoryRepository.GetTotalCountAsync(request);
+
+                response = Utility.CreateResponse(pageResult, HttpStatusCode.OK);
             }
             catch (Exception ex)
             {

@@ -11,6 +11,6 @@ namespace POS_Accessories.Business.Interfaces
         Task<CommonResponse> UpdateStatusAsync(int id, string status);
         Task<CommonResponse> GetByIdAsync(int id);
         Task<CommonResponse> GetAllAsync(int categoryId);
-        Task<CommonResponse> GetByPagingAsync(GetPagedRequest request);
+        Task<CommonResponse> GetByPagingAsync(GetPagedSearch request);
     }
 }

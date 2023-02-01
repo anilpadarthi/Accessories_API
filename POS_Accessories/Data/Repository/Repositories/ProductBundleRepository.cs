@@ -45,7 +45,7 @@ namespace POS_Accessories.Data.Repository.Repositories
 
 
 
-        public async Task<IEnumerable<ProductBundleMap>> GetByPagingAsync(GetPagedRequest request)
+        public async Task<IEnumerable<ProductBundleMap>> GetByPagingAsync(GetPagedSearch request)
         {
             return await _context.Set<ProductBundleMap>()
                 .Where(w => w.IsActive == true)

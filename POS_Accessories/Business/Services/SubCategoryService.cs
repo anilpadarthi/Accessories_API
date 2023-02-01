@@ -104,7 +104,7 @@ namespace POS_Accessories.Business.Services
             }
             return response;
         }
-        public async Task<CommonResponse> GetByPagingAsync(GetPagedRequest request)
+        public async Task<CommonResponse> GetByPagingAsync(GetPagedSearch request)
         {
             CommonResponse response = new CommonResponse();
             try

@@ -52,7 +52,7 @@ namespace POS_Accessories.Data.Repository.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetByPagingAsync(GetPagedRequest request)
+        public async Task<IEnumerable<Product>> GetByPagingAsync(GetPagedSearch request)
         {
             return await _context.Set<Product>()
                 .Where(w => w.Status != "D")

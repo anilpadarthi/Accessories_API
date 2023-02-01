@@ -11,6 +11,6 @@ namespace POS_Accessories.Data.Repository.Interfaces
         Task<Product> GetByIdAsync(int productId);
         Task<Product> GetByNameAsync(string productName);
         Task<IEnumerable<Product>> GetAllAsync();
-        Task<IEnumerable<Product>> GetByPagingAsync(GetPagedRequest request);
+        Task<IEnumerable<Product>> GetByPagingAsync(GetPagedSearch request);
     }
 }

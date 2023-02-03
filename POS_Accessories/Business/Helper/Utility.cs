@@ -87,9 +87,11 @@ namespace POS_Accessories.Business.Helper
 
         public static CommonResponse CreateResponse(object result,HttpStatusCode statusCode)
         {
+            List<HttpStatusCode> successStatus = new List<HttpStatusCode> { HttpStatusCode.OK, HttpStatusCode.Created };
             CommonResponse response = new CommonResponse();
             response.data = result;
             response.statusCode = statusCode;
+            response.status = successStatus.Any(s => s.Equals(statusCode));
             return response;
         }
 

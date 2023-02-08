@@ -14,7 +14,8 @@ namespace POS_Accessories.Data.Repository.Repositories
         public async Task CreateAsync(Product request)
         {
             _context.Add(request);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();         
+
         }
         public async Task UpdateAsync(Product request)
         {
@@ -52,12 +53,7 @@ namespace POS_Accessories.Data.Repository.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetByPagingAsync(GetPagedSearch request)
-        {
-            return await _context.Set<Product>()
-                .Where(w => w.Status != "D")
-                .ToListAsync();
-        }
+
 
         public async Task<Product> GetProductAsync(int productId)
         {
@@ -70,6 +66,45 @@ namespace POS_Accessories.Data.Repository.Repositories
                 .Where(w => w.ProductId == productId)
                 .FirstOrDefaultAsync();
             return result;
+        }
+
+        public async Task<IEnumerable<Product>> GetByPagingAsync(GetPagedSearch request)
+        {
+            var query = _context.Set<Product>()
+                .Where(w => w.Status != "D");
+
+            if (request.categoryId.HasValue && request.categoryId > 0)
+            {
+                query = query.Where(w => w.CategoryId == request.categoryId);
+            }
+            if (request.subCategoryId.HasValue && request.subCategoryId > 0)
+            {
+                query = query.Where(w => w.SubCategoryId == request.subCategoryId);
+            }
+            if (!string.IsNullOrEmpty(request.searchText))
+            {
+                query = query.Where(w => w.ProductName.Contains(request.searchText) || w.ProductCode.Contains(request.searchText));
+            }
+
+            var result = await query
+                .OrderBy(o => o.ProductName)
+                .Skip((request.pageNo - 1) * request.pageSize)
+                .Take(request.pageSize)
+                .ToListAsync();
+
+            return result;
+        }
+
+        public async Task<int> GetTotalCountAsync(GetPagedSearch request)
+        {
+            var query = _context.Set<Product>()
+               .Where(w => w.Status != "D");
+
+            if (!string.IsNullOrEmpty(request.searchText))
+            {
+                query = query.Where(w => w.ProductName.Contains(request.searchText) || w.ProductCode.Contains(request.searchText));
+            }
+            return await query.CountAsync();
         }
 
     }

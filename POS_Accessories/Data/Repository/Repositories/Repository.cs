@@ -48,7 +48,14 @@ namespace POS_Accessories.Data.Repository.Repositories
 
         public async Task<int> SaveChangesAsync()
         {
-            return await _context.SaveChangesAsync();
+            try
+            {
+                return await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                return 0;
+            }
         }
 
         public void Add<TEntity>(TEntity record) where TEntity : class

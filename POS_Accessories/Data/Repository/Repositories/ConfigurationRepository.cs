@@ -11,51 +11,66 @@ namespace POS_Accessories.Data.Repository.Repositories
         {
         }
 
-        public async Task<IEnumerable<string>> CreateConfigurationAsync(Configuration request)
+        public async Task CreateAsync(Configuration request)
         {
             _context.Add(request);
             await _context.SaveChangesAsync();
-            List<string> resultList = new List<string>();
-            resultList.Add("Created successfully");
-            return resultList;
         }
 
-        public async Task<IEnumerable<string>> DeleteConfigurationAsync(int ConfigurationId)
+        public async Task UpdateAsync(Configuration request)
         {
-            var Configuration = await GetConfigurationAsync(ConfigurationId);
-            Configuration.IsActive = false;
             await _context.SaveChangesAsync();
-            List<string> resultList = new List<string>();
-            resultList.Add("Deleted successfully");
-            return resultList;
         }
 
-        public async Task<IEnumerable<string>> UpdateConfigurationAsync(Configuration request)
+        public async Task UpdateStatusAsync(int id, string status)
         {
-            //var Configuration = await GetConfigurationAsync(request.ConfigurationId);
-            //Configuration.ConfigurationName = request.ConfigurationName;
+            var dbRecord = await GetByIdAsync(id);
+            dbRecord.Status = status;
             await _context.SaveChangesAsync();
-            List<string> resultList = new List<string>();
-            resultList.Add("Updated successfully");
-            return resultList;
         }
 
-        public async Task<IEnumerable<Configuration>> GetAllConfigurationsAsync()
+        public async Task<IEnumerable<Configuration>> GetAllAsync()
         {
             var resultList = await _context.Set<Configuration>().ToListAsync();
             return resultList;
         }
 
-        public async Task<Configuration> GetConfigurationAsync(int ConfigurationId)
+        public async Task<Configuration> GetByIdAsync(int id)
         {
-            var result = await _context.Set<Configuration>().Where(w => w.ConfigId == ConfigurationId).FirstOrDefaultAsync();
+            var result = await _context.Set<Configuration>().Where(w => w.ConfigId == id).FirstOrDefaultAsync();
             return result;
         }
 
-        public async Task<IEnumerable<Configuration>> GetPagedConfigurationsAsync(GetPagedSearch request)
+        public async Task<Configuration> ValidateUnique(Configuration request)
         {
-            var resultList = await _context.Set<Configuration>().ToListAsync();
-            return resultList;
+            return await _context.Set<Configuration>()
+                .Where(w => w.ConfigurationTypeId == request.ConfigurationTypeId && w.FromDate == request.FromDate && w.ToDate == request.ToDate)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Configuration>> GetByPagingAsync(GetPagedSearch request)
+        {
+            var query = _context.Set<Configuration>()
+                .Where(w => w.Status != "D");
+
+
+
+            var result = await query
+                .OrderBy(o => o.ConfigurationTypeId)
+                .Skip((request.pageNo - 1) * request.pageSize)
+                .Take(request.pageSize)
+                .ToListAsync();
+
+            return result;
+        }
+
+        public async Task<int> GetTotalCountAsync(GetPagedSearch request)
+        {
+            var query = _context.Set<Configuration>()
+               .Where(w => w.Status != "D");
+
+
+            return await query.CountAsync();
         }
 
 

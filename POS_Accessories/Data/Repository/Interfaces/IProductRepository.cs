@@ -12,5 +12,6 @@ namespace POS_Accessories.Data.Repository.Interfaces
         Task<Product> GetByNameAsync(string productName);
         Task<IEnumerable<Product>> GetAllAsync();
         Task<IEnumerable<Product>> GetByPagingAsync(GetPagedSearch request);
+        Task<int> GetTotalCountAsync(GetPagedSearch request);
     }
 }

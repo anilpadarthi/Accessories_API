@@ -7,11 +7,11 @@ namespace POS_Accessories.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : BaseController
+    public class ProductBundleController : BaseController
     {
         private readonly IProductService _service;
         private readonly IConfiguration _configuration;
-        public ProductController(IProductService service, IConfiguration configuration)
+        public ProductBundleController(IProductService service, IConfiguration configuration)
         {
             _service = service;
             _configuration = configuration;

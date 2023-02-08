@@ -15,6 +15,7 @@ namespace POS_Accessories.Data.Repository.Repositories
         public async Task<IEnumerable<LookupResult>> GetCategories()
         {
             var resultList = await _context.Set<Category>()
+                             .Where(w => w.Status != "D")
                              .Select(x => new LookupResult
                              {
                                  Id = x.CategoryId,
@@ -28,6 +29,7 @@ namespace POS_Accessories.Data.Repository.Repositories
         {
             var resultList = await _context.Set<SubCategory>()
                              .Where(w => w.CategoryId == categoryId)
+                             .Where(w => w.Status != "D")
                              .Select(x => new LookupResult
                              {
                                  Id = x.SubCategoryId,
@@ -55,6 +57,18 @@ namespace POS_Accessories.Data.Repository.Repositories
                              .Select(x => new LookupResult
                              {
                                  Id = x.SizeId,
+                                 Name = x.Name
+                             }).ToListAsync();
+
+            return resultList;
+        }
+
+        public async Task<IEnumerable<LookupResult>> GetConfigurationTypes()
+        {
+            var resultList = await _context.Set<ConfigurationType>()
+                             .Select(x => new LookupResult
+                             {
+                                 Id = x.ConfigurationTypeId,
                                  Name = x.Name
                              }).ToListAsync();
 

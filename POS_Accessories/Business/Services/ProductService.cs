@@ -11,10 +11,12 @@ namespace POS_Accessories.Business.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
+        private readonly IProductPriceRepository _productPriceRepository;
 
-        public ProductService(IProductRepository ProductRepository)
+        public ProductService(IProductRepository productRepository, IProductPriceRepository productPriceRepository)
         {
-            _productRepository = ProductRepository;
+            _productRepository = productRepository;
+            _productPriceRepository = productPriceRepository;
         }
         public async Task<CommonResponse> CreateAsync(Product request)
         {
@@ -30,6 +32,44 @@ namespace POS_Accessories.Business.Services
                 {
                     request.Status = "A";
                     await _productRepository.CreateAsync(request);
+                    int productId = request.ProductId;
+
+                    if (request.ProductPriceMaps != null)
+                    {
+                        foreach (var item in request.ProductPriceMaps)
+                        {
+                            _productRepository.Add(item);
+                            _productRepository.SaveChangesAsync();
+                        }
+                    }
+
+                    if (request.ProductColourMaps != null)
+                    {
+                        foreach (var item in request.ProductColourMaps)
+                        {
+                            _productRepository.Add(item);
+                            _productRepository.SaveChangesAsync();
+                        }
+                    }
+
+                    if (request.ProductSizeMaps != null)
+                    {
+                        foreach (var item in request.ProductSizeMaps)
+                        {
+                            _productRepository.Add(item);
+                            _productRepository.SaveChangesAsync();
+                        }
+                    }
+
+                    if (request.ProductImageMaps != null)
+                    {
+                        foreach (var item in request.ProductImageMaps)
+                        {
+                            _productRepository.Add(item);
+                            _productRepository.SaveChangesAsync();
+                        }
+                    }
+
                     response = Utility.CreateResponse("Created successfully", HttpStatusCode.Created);
                 }
             }
@@ -115,8 +155,11 @@ namespace POS_Accessories.Business.Services
             CommonResponse response = new CommonResponse();
             try
             {
-                var result = await _productRepository.GetByPagingAsync(request);
-                response = Utility.CreateResponse(result, HttpStatusCode.OK);
+                PagedResult pageResult = new PagedResult();
+                pageResult.Results = await _productRepository.GetByPagingAsync(request);
+                pageResult.TotalRecords = await _productRepository.GetTotalCountAsync(request);
+
+                response = Utility.CreateResponse(pageResult, HttpStatusCode.OK);
             }
             catch (Exception ex)
             {

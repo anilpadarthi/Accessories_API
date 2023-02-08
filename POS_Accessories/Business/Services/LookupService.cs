@@ -75,6 +75,23 @@ namespace POS_Accessories.Business.Services
             return response;
         }
 
+        public async Task<CommonResponse> GetConfigurationTypes()
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var list = await _repository.GetConfigurationTypes();
+                response = Utility.CreateResponse(list, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
+        }
+
+        
+
 
     }
 }

@@ -1,15 +1,16 @@
 ﻿using POS_Accessories.Models;
 using POS_Accessories.Models.Request;
+using POS_Accessories.Models.Response;
 
 namespace POS_Accessories.Business.Interfaces
 {
     public interface IConfigurationService
     {
-        Task<IEnumerable<string>> CreateConfigurationAsync(Configuration request);
-        Task<IEnumerable<string>> UpdateConfigurationAsync(Configuration request);
-        Task<IEnumerable<string>> DeleteConfigurationAsync(int ConfigurationId);
-        Task<Configuration> GetConfigurationAsync(int ConfigurationId);
-        Task<IEnumerable<Configuration>> GetAllConfigurationsAsync();
-        Task<IEnumerable<Configuration>> GetPagedConfigurationsAsync(GetPagedSearch request);
+        Task<CommonResponse> CreateAsync(Configuration request);
+        Task<CommonResponse> UpdateAsync(Configuration request);
+        Task<CommonResponse> UpdateStatusAsync(int id, string status);
+        Task<CommonResponse> GetByIdAsync(int id);
+        Task<CommonResponse> GetAllAsync();
+        Task<CommonResponse> GetByPagingAsync(GetPagedSearch request);
     }
 }

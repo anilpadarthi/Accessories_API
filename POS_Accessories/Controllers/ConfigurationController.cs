@@ -17,50 +17,45 @@ namespace POS_Accessories.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("GetPagedCategories")]
-        public async Task<IActionResult> GetPagedCategories(int? pageNo, int? pageSize, string? searchText)
+        [HttpPost("GetByPaging")]
+        public async Task<IActionResult> GetByPaging(GetPagedSearch request)
         {
-            GetPagedSearch request = new GetPagedSearch();
-            //request.mode = string.IsNullOrEmpty(searchText) ? DbActions.GetAll : DbActions.Search;
-            request.pageNo = pageNo ?? int.Parse(_configuration["PageNumber"]);
-            request.pageSize = pageSize ?? int.Parse(_configuration["PageSize"]);
-            request.searchText = searchText;
-            var result = await _service.GetAllConfigurationsAsync();
+            var result = await _service.GetByPagingAsync(request);
             return Json(result);
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _service.GetAllConfigurationsAsync();
+            var result = await _service.GetAllAsync();
             return Json(result);
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
-        {           
-            var result = await _service.GetConfigurationAsync(id);
+        {
+            var result = await _service.GetByIdAsync(id);
             return Json(result);
         }
 
-        [HttpPost("Create")]
+        [HttpPost]
         public async Task<IActionResult> Create(Configuration request)
         {
-            var result = await _service.CreateConfigurationAsync(request);
+            var result = await _service.CreateAsync(request);
             return Json(result);
         }
 
-        [HttpPut("Update")]
+        [HttpPut]
         public async Task<IActionResult> Update(Configuration request)
         {
-            var result = await _service.UpdateConfigurationAsync(request);
+            var result = await _service.UpdateAsync(request);
             return Json(result);
         }
 
-        [HttpDelete("Delete")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpPut("UpdateStatus")]
+        public async Task<IActionResult> UpdateStatus(Configuration request)
         {
-            var result = await _service.DeleteConfigurationAsync(id);
+            var result = await _service.UpdateStatusAsync(request.ConfigId, request.Status);
             return Json(result);
         }
     }

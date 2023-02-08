@@ -15,7 +15,7 @@ public partial class ProductPriceMap
 
     public int? ToQty { get; set; }
 
-    public bool IsActive { get; set; }
+    public string? Status { get; set; }
 
     public DateTime? CreatedDate { get; set; }
 

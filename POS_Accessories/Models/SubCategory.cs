@@ -22,6 +22,4 @@ public partial class SubCategory
     public int? CreatedBy { get; set; }
 
     public int? ModifiedBy { get; set; }
-
-    public virtual Category? Category { get; set; }
 }

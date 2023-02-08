@@ -65,6 +65,7 @@ namespace POS_Accessories.Data.Repository.Repositories
             }
 
             var result = await query
+                .OrderBy(o => o.CategoryName)
                 .Skip((request.pageNo - 1) * request.pageSize)
                 .Take(request.pageSize)
                 .ToListAsync();

@@ -47,6 +47,7 @@ public partial class AccessoriesDbContext : DbContext
     public virtual DbSet<ProductSizeMap> ProductSizeMaps { get; set; }
 
     public virtual DbSet<Size> Sizes { get; set; }
+    public virtual DbSet<ConfigurationType> ConfigurationType { get; set; }
 
     public virtual DbSet<Stock> Stocks { get; set; }
 
@@ -65,6 +66,22 @@ public partial class AccessoriesDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>();
+        modelBuilder.Entity<ConfigurationType>();
+
+        modelBuilder.Entity<Configuration>(entity =>
+        {
+            entity.HasKey(e => e.ConfigId);
+
+            entity.ToTable("Configuration");
+
+            entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.FromDate).HasColumnType("date");
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ToDate).HasColumnType("date");
+        });
+
+
         modelBuilder.Entity<Category>(entity =>
         {
             entity.ToTable("Category");
@@ -98,21 +115,7 @@ public partial class AccessoriesDbContext : DbContext
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
         });
 
-        modelBuilder.Entity<Configuration>(entity =>
-        {
-            entity.HasKey(e => e.ConfigId);
-
-            entity.ToTable("Configuration");
-
-            entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
-            entity.Property(e => e.ConfigType)
-                .HasMaxLength(10)
-                .IsFixedLength();
-            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            entity.Property(e => e.FromDate).HasColumnType("date");
-            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
-            entity.Property(e => e.ToDate).HasColumnType("date");
-        });
+        
 
         modelBuilder.Entity<Coupon>(entity =>
         {
@@ -418,9 +421,7 @@ public partial class AccessoriesDbContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Category).WithMany(p => p.SubCategories)
-                .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("FK_SubCategory_Category");
+            
         });
 
         OnModelCreatingPartial(modelBuilder);

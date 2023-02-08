@@ -2,6 +2,9 @@
 using POS_Accessories.Data.Repository.Interfaces;
 using POS_Accessories.Models;
 using POS_Accessories.Models.Request;
+using POS_Accessories.Models.Response;
+using POS_Accessories.Business.Helper;
+using System.Net;
 
 namespace POS_Accessories.Business.Services
 {
@@ -13,40 +16,110 @@ namespace POS_Accessories.Business.Services
         {
             _configurationRepository = ConfigurationRepository;
         }
-        public async Task<IEnumerable<string>> CreateConfigurationAsync(Configuration request)
+        public async Task<CommonResponse> CreateAsync(Configuration request)
         {
-            return await _configurationRepository.CreateConfigurationAsync(request);
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var result = await _configurationRepository.ValidateUnique(request);
+                if (result != null)
+                {
+                    response = Utility.CreateResponse("Name already exist", HttpStatusCode.Conflict);
+                }
+                else
+                {
+                    request.Status = "A";
+                    await _configurationRepository.CreateAsync(request);
+                    response = Utility.CreateResponse("Created successfully", HttpStatusCode.Created);
+                }
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
+        }
+        public async Task<CommonResponse> UpdateAsync(Configuration request)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var result = await _configurationRepository.ValidateUnique(request);
+                if (result != null && result.ConfigId != request.ConfigId)
+                {
+                    response = Utility.CreateResponse("Name already exist", HttpStatusCode.Conflict);
+                }
+                else
+                {
+                    await _configurationRepository.UpdateAsync(request);
+                    response = Utility.CreateResponse("Updated successfully", HttpStatusCode.OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
+        }
+        public async Task<CommonResponse> UpdateStatusAsync(int id, string status)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                await _configurationRepository.UpdateStatusAsync(id, status);
+                response = Utility.CreateResponse("Updated successfully", HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
         }
 
-        public async Task<IEnumerable<string>> DeleteConfigurationAsync(int ConfigurationId)
+        public async Task<CommonResponse> GetAllAsync()
         {
-            return await _configurationRepository.DeleteConfigurationAsync(ConfigurationId);
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var result = await _configurationRepository.GetAllAsync();
+                response = Utility.CreateResponse(result, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
         }
-
-        public async Task<IEnumerable<string>> UpdateConfigurationAsync(Configuration request)
+        public async Task<CommonResponse> GetByIdAsync(int id)
         {
-            var configuration = await _configurationRepository.GetConfigurationAsync(request.ConfigId);
-            configuration.ConfigType = request.ConfigType;
-            configuration.Amount = request.Amount;
-            configuration.FromDate = request.FromDate;
-            configuration.ToDate = request.ToDate;
-            configuration.ModifiedBy = request.ModifiedBy;
-            return await _configurationRepository.UpdateConfigurationAsync(configuration);            
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var result = await _configurationRepository.GetByIdAsync(id);
+                response = Utility.CreateResponse(result, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
         }
-
-        public async Task<IEnumerable<Configuration>> GetAllConfigurationsAsync()
+        public async Task<CommonResponse> GetByPagingAsync(GetPagedSearch request)
         {
-            return await _configurationRepository.GetAllConfigurationsAsync();
-        }
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                PagedResult pageResult = new PagedResult();
+                pageResult.Results = await _configurationRepository.GetByPagingAsync(request);
+                pageResult.TotalRecords = await _configurationRepository.GetTotalCountAsync(request);
 
-        public async Task<Configuration> GetConfigurationAsync(int ConfigurationId)
-        {
-            return await _configurationRepository.GetConfigurationAsync(ConfigurationId);
-        }
-
-        public async Task<IEnumerable<Configuration>> GetPagedConfigurationsAsync(GetPagedSearch request)
-        {
-            return await _configurationRepository.GetPagedConfigurationsAsync(request);
+                response = Utility.CreateResponse(pageResult, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
         }
     }
 }

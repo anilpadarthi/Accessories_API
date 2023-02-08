@@ -8,5 +8,6 @@ namespace POS_Accessories.Data.Repository.Interfaces
         Task<IEnumerable<LookupResult>> GetSubCategories(int categoryId);
         Task<IEnumerable<LookupResult>> GetAvailableColours();
         Task<IEnumerable<LookupResult>> GetAvailableSizes();
+        Task<IEnumerable<LookupResult>> GetConfigurationTypes();
     }
 }

@@ -22,7 +22,7 @@ namespace POS_Accessories.Business.Services
             CommonResponse response = new CommonResponse();
             try
             {
-                var result = await _subCategoryRepository.GetByNameAsync(request.SubCategoryName);
+                var result = await _subCategoryRepository.GetByNameAsync(request.SubCategoryName,request.CategoryId);
                 if (result != null)
                 {
                     response = Utility.CreateResponse("Name already exist", HttpStatusCode.Conflict);
@@ -45,7 +45,7 @@ namespace POS_Accessories.Business.Services
             CommonResponse response = new CommonResponse();
             try
             {
-                var result = await _subCategoryRepository.GetByNameAsync(request.SubCategoryName);
+                var result = await _subCategoryRepository.GetByNameAsync(request.SubCategoryName, request.CategoryId);
                 if (result != null && result.SubCategoryId != request.SubCategoryId)
                 {
                     response = Utility.CreateResponse("Name already exist", HttpStatusCode.Conflict);
@@ -109,8 +109,10 @@ namespace POS_Accessories.Business.Services
             CommonResponse response = new CommonResponse();
             try
             {
-                var result = await _subCategoryRepository.GetByPagingAsync(request);
-                response = Utility.CreateResponse(result, HttpStatusCode.OK);
+                PagedResult pageResult = new PagedResult();
+                pageResult.Results = await _subCategoryRepository.GetByPagingAsync(request);
+                pageResult.TotalRecords = await _subCategoryRepository.GetTotalCountAsync(request);
+                response = Utility.CreateResponse(pageResult, HttpStatusCode.OK);
             }
             catch (Exception ex)
             {

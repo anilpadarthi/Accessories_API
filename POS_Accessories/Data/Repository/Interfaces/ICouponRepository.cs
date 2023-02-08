@@ -5,11 +5,13 @@ namespace POS_Accessories.Data.Repository.Interfaces
 {
     public interface ICouponRepository: IRepository
     {
-        Task<IEnumerable<string>> CreateCouponAsync(Coupon request);
-        Task<IEnumerable<string>> UpdateCouponAsync(Coupon request);
-        Task<IEnumerable<string>> DeleteCouponAsync(int CouponId);
-        Task<Coupon> GetCouponAsync(int CouponId);
-        Task<IEnumerable<Coupon>> GetAllCouponsAsync();
-        Task<IEnumerable<Coupon>> GetPagedCouponsAsync(GetPagedSearch request);
+        Task CreateAsync(Coupon request);
+        Task UpdateAsync(Coupon request);
+        Task UpdateStatusAsync(int id, string status);
+        Task<Coupon> GetByIdAsync(int id);
+        Task<Coupon> GetByNameAsync(string name);
+        Task<IEnumerable<Coupon>> GetAllAsync();
+        Task<IEnumerable<Coupon>> GetByPagingAsync(GetPagedSearch request);
+        Task<int> GetTotalCountAsync(GetPagedSearch request);
     }
 }

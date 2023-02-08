@@ -29,7 +29,6 @@ namespace POS_Accessories.Data.Repository.Repositories
         public async Task DeleteAsync(int productPriceMapId)
         {
             var model = await GetByIdAsync(productPriceMapId);
-            model.IsActive = false;
             await _context.SaveChangesAsync();
         }
 

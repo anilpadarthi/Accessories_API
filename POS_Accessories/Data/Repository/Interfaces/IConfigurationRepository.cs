@@ -5,11 +5,15 @@ namespace POS_Accessories.Data.Repository.Interfaces
 {
     public interface IConfigurationRepository: IRepository
     {
-        Task<IEnumerable<string>> CreateConfigurationAsync(Configuration request);
-        Task<IEnumerable<string>> UpdateConfigurationAsync(Configuration request);
-        Task<IEnumerable<string>> DeleteConfigurationAsync(int ConfigurationId);
-        Task<Configuration> GetConfigurationAsync(int ConfigurationId);
-        Task<IEnumerable<Configuration>> GetAllConfigurationsAsync();
-        Task<IEnumerable<Configuration>> GetPagedConfigurationsAsync(GetPagedSearch request);
+
+        Task CreateAsync(Configuration request);
+        Task UpdateAsync(Configuration request);
+        Task UpdateStatusAsync(int id, string status);
+        Task<Configuration> GetByIdAsync(int id);
+        Task<Configuration> ValidateUnique(Configuration request);
+        Task<IEnumerable<Configuration>> GetAllAsync();
+        Task<IEnumerable<Configuration>> GetByPagingAsync(GetPagedSearch request);
+        Task<int> GetTotalCountAsync(GetPagedSearch request);
+
     }
 }

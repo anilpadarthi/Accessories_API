@@ -41,5 +41,12 @@ namespace POS_Accessories.Controllers
             return Json(result);
         }
 
+        [HttpGet("ConfigurationTypes")]
+        public async Task<IActionResult> GetConfigurationTypes()
+        {
+            var result = await _service.GetConfigurationTypes();
+            return Json(result);
+        }
+
     }
 }

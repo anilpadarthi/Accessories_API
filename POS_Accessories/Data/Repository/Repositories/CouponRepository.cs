@@ -11,51 +11,72 @@ namespace POS_Accessories.Data.Repository.Repositories
         {
         }
 
-        public async Task<IEnumerable<string>> CreateCouponAsync(Coupon request)
+        public async Task CreateAsync(Coupon request)
         {
             _context.Add(request);
             await _context.SaveChangesAsync();
-            List<string> resultList = new List<string>();
-            resultList.Add("Created successfully");
-            return resultList;
-        }
+        }        
 
-        public async Task<IEnumerable<string>> DeleteCouponAsync(int CouponId)
+        public async Task UpdateAsync(Coupon request)
         {
-            var Coupon = await GetCouponAsync(CouponId);
-            Coupon.IsActive = false;
             await _context.SaveChangesAsync();
-            List<string> resultList = new List<string>();
-            resultList.Add("Deleted successfully");
-            return resultList;
         }
 
-        public async Task<IEnumerable<string>> UpdateCouponAsync(Coupon request)
+        public async Task UpdateStatusAsync(int id, string status)
         {
-            //var Coupon = await GetCouponAsync(request.CouponId);
-            //Coupon.CouponName = request.CouponName;
+            var dbRecord = await GetByIdAsync(id);
+            dbRecord.Status = status;
             await _context.SaveChangesAsync();
-            List<string> resultList = new List<string>();
-            resultList.Add("Updated successfully");
-            return resultList;
         }
 
-        public async Task<IEnumerable<Coupon>> GetAllCouponsAsync()
+        public async Task<IEnumerable<Coupon>> GetAllAsync()
         {
             var resultList = await _context.Set<Coupon>().ToListAsync();
             return resultList;
         }
 
-        public async Task<Coupon> GetCouponAsync(int CouponId)
+        public async Task<Coupon> GetByIdAsync(int id)
         {
-            var result = await _context.Set<Coupon>().Where(w => w.CouponId == CouponId).FirstOrDefaultAsync();
+            var result = await _context.Set<Coupon>().Where(w => w.CouponId == id).FirstOrDefaultAsync();
             return result;
         }
 
-        public async Task<IEnumerable<Coupon>> GetPagedCouponsAsync(GetPagedSearch request)
+        public async Task<Coupon> GetByNameAsync(string name)
         {
-            var resultList = await _context.Set<Coupon>().ToListAsync();
-            return resultList;
+            return await _context.Set<Coupon>()
+                .Where(w => w.CouponCode.ToUpper() == name.ToUpper())
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Coupon>> GetByPagingAsync(GetPagedSearch request)
+        {
+            var query = _context.Set<Coupon>()
+                .Where(w => w.Status != "D");
+
+            if (!string.IsNullOrEmpty(request.searchText))
+            {
+                query = query.Where(w => w.CouponCode.Contains(request.searchText));
+            }
+
+            var result = await query
+                .OrderBy(o => o.CouponCode)
+                .Skip((request.pageNo - 1) * request.pageSize)
+                .Take(request.pageSize)
+                .ToListAsync();
+
+            return result;
+        }
+
+        public async Task<int> GetTotalCountAsync(GetPagedSearch request)
+        {
+            var query = _context.Set<Coupon>()
+               .Where(w => w.Status != "D");
+
+            if (!string.IsNullOrEmpty(request.searchText))
+            {
+                query = query.Where(w => w.CouponCode.Contains(request.searchText));
+            }
+            return await query.CountAsync();
         }
 
 

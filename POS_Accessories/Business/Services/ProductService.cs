@@ -1,4 +1,5 @@
-﻿using POS_Accessories.Business.Helper;
+﻿using AutoMapper;
+using POS_Accessories.Business.Helper;
 using POS_Accessories.Business.Interfaces;
 using POS_Accessories.Data.Repository.Interfaces;
 using POS_Accessories.Models;
@@ -12,13 +13,15 @@ namespace POS_Accessories.Business.Services
     {
         private readonly IProductRepository _productRepository;
         private readonly IProductPriceRepository _productPriceRepository;
+        private readonly IMapper _mapper;
 
-        public ProductService(IProductRepository productRepository, IProductPriceRepository productPriceRepository)
+        public ProductService(IProductRepository productRepository, IProductPriceRepository productPriceRepository, IMapper mapper)
         {
             _productRepository = productRepository;
             _productPriceRepository = productPriceRepository;
+            _mapper = mapper;
         }
-        public async Task<CommonResponse> CreateAsync(Product request)
+        public async Task<CommonResponse> CreateAsync(ProductRequestModel request)
         {
             CommonResponse response = new CommonResponse();
             try
@@ -30,45 +33,28 @@ namespace POS_Accessories.Business.Services
                 }
                 else
                 {
+                    var createCriteria = _mapper.Map<Product>(request);
                     request.Status = "A";
-                    await _productRepository.CreateAsync(request);
-                    int productId = request.ProductId;
+                    await _productRepository.CreateAsync(createCriteria);
 
-                    if (request.ProductPriceMaps != null)
+                    if (request.PriceList != null)
                     {
-                        foreach (var item in request.ProductPriceMaps)
+                        foreach (var item in request.PriceList)
                         {
-                            _productRepository.Add(item);
+                            var createPrice = _mapper.Map<ProductPriceMap>(item);
+                            _productRepository.Add(createPrice);
                             _productRepository.SaveChangesAsync();
                         }
                     }
 
-                    if (request.ProductColourMaps != null)
-                    {
-                        foreach (var item in request.ProductColourMaps)
-                        {
-                            _productRepository.Add(item);
-                            _productRepository.SaveChangesAsync();
-                        }
-                    }
-
-                    if (request.ProductSizeMaps != null)
-                    {
-                        foreach (var item in request.ProductSizeMaps)
-                        {
-                            _productRepository.Add(item);
-                            _productRepository.SaveChangesAsync();
-                        }
-                    }
-
-                    if (request.ProductImageMaps != null)
-                    {
-                        foreach (var item in request.ProductImageMaps)
-                        {
-                            _productRepository.Add(item);
-                            _productRepository.SaveChangesAsync();
-                        }
-                    }
+                    //if (request.ProductImageMaps != null)
+                    //{
+                    //    foreach (var item in request.ProductImageMaps)
+                    //    {
+                    //        _productRepository.Add(item);
+                    //        _productRepository.SaveChangesAsync();
+                    //    }
+                    //}
 
                     response = Utility.CreateResponse("Created successfully", HttpStatusCode.Created);
                 }
@@ -80,7 +66,7 @@ namespace POS_Accessories.Business.Services
             return response;
         }
 
-        public async Task<CommonResponse> UpdateAsync(Product request)
+        public async Task<CommonResponse> UpdateAsync(ProductRequestModel request)
         {
             CommonResponse response = new CommonResponse();
             try
@@ -92,7 +78,9 @@ namespace POS_Accessories.Business.Services
                 }
                 else
                 {
-                    await _productRepository.UpdateAsync(request);
+                    var updateCriteria = _mapper.Map<Product>(request);
+                    await _productRepository.UpdateAsync(updateCriteria
+                        );
                     response = Utility.CreateResponse("Updated successfully", HttpStatusCode.OK);
                 }
             }

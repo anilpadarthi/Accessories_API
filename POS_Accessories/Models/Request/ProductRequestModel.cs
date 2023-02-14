@@ -29,6 +29,6 @@ public partial class ProductRequestModel
     public string? Status { get; set; }
     public List<int> SizeList { get; set; }
     public List<int> ColourList { get; set; }
-    public List<ProductPriceRequestModel> PriceList { get; set; }
+    public List<ProductPriceRequestModel>? PriceList { get; set; }
 
 }

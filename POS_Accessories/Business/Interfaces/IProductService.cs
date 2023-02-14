@@ -7,8 +7,8 @@ namespace POS_Accessories.Business.Interfaces
     public interface IProductService
     {
         //Product
-        Task<CommonResponse> CreateAsync(Product request);
-        Task<CommonResponse> UpdateAsync(Product request);
+        Task<CommonResponse> CreateAsync(ProductRequestModel request);
+        Task<CommonResponse> UpdateAsync(ProductRequestModel request);
         Task<CommonResponse> UpdateStatusAsync(int id, string status);
         Task<CommonResponse> GetByIdAsync(int id);
         Task<CommonResponse> GetAllAsync();

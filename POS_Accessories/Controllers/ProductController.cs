@@ -39,15 +39,15 @@ namespace POS_Accessories.Controllers
             return Json(result);
         }
 
-        [HttpPost("Create")]
-        public async Task<IActionResult> Create(Product request)
+        [HttpPost]
+        public async Task<IActionResult> Create(ProductRequestModel request)
         {
             var result = await _service.CreateAsync(request);
             return Json(result);
         }
 
-        [HttpPut("Update")]
-        public async Task<IActionResult> Update(Product request)
+        [HttpPut]
+        public async Task<IActionResult> Update(ProductRequestModel request)
         {
             var result = await _service.UpdateAsync(request);
             return Json(result);

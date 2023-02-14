@@ -26,6 +26,7 @@
 
 //app.Run();
 
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -78,7 +79,7 @@ builder.Services.AddScoped<IProductBundleRepository, ProductBundleRepository>();
 builder.Services.AddScoped<IProductPriceRepository, ProductPriceRepository>();
 
 
-
+ConfigureAutoMapper(builder.Services);
 configuration.GetSection(ApplicationSettings.dbConnection).Bind(ApplicationSettings.ConnectionString);
 configuration.GetSection(ApplicationSettings.mailSettings).Bind(ApplicationSettings.MailSettings);
 
@@ -162,4 +163,14 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+void ConfigureAutoMapper(IServiceCollection services)
+{
+    var mapperConfig = new MapperConfiguration(mc =>
+    {
+        mc.AddProfile(new MappingProfile());
+    });
+    IMapper mapper = mapperConfig.CreateMapper();
+    services.AddSingleton(mapper);
+}
 

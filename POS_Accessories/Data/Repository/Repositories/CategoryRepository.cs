@@ -36,7 +36,7 @@ namespace POS_Accessories.Data.Repository.Repositories
         public async Task<IEnumerable<Category>> GetAllAsync()
         {
             return await _context.Set<Category>()
-                .Where(w => w.Status != "D")
+                .Where(w => w.Status != "D").Include("SubCategories")
                 .ToListAsync();
         }
 

@@ -9,5 +9,6 @@ namespace POS_Accessories.Business.Interfaces
         Task<CommonResponse> GetAvailableColours();
         Task<CommonResponse> GetAvailableSizes();
         Task<CommonResponse> GetConfigurationTypes();
+        Task<CommonResponse> GetProducts();
     }
 }

@@ -355,7 +355,7 @@ public partial class AccessoriesDbContext : DbContext
 
         modelBuilder.Entity<Stock>(entity =>
         {
-            entity.HasKey(e => e.ProductId).HasName("PK_StockInventory");
+            entity.HasKey(e => e.ProductId).HasName("PK_Stock");
 
             entity.ToTable("Stock");
 
@@ -396,9 +396,8 @@ public partial class AccessoriesDbContext : DbContext
 
         modelBuilder.Entity<StockInventory>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("StockInventory");
+            entity.HasKey(e => e.StockInventoryId).HasName("PK_StockInventory");
+            entity.ToTable("StockInventory");
 
             entity.Property(e => e.BuyPrice).HasColumnType("decimal(18, 0)");
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");

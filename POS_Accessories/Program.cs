@@ -62,6 +62,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILookupService, LookupService>();
 builder.Services.AddScoped<IProductPriceService, ProductPriceService>();
 builder.Services.AddScoped<IProductBundleService, ProductBundleService>();
+builder.Services.AddScoped<IStockInventoryService, StockInventoryService>();
+
 
 
 
@@ -77,6 +79,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ILookupRepository, LookupRepository>();
 builder.Services.AddScoped<IProductBundleRepository, ProductBundleRepository>();
 builder.Services.AddScoped<IProductPriceRepository, ProductPriceRepository>();
+builder.Services.AddScoped<IStockInventoryRepository, StockInventoryRepository>();
+
 
 
 ConfigureAutoMapper(builder.Services);

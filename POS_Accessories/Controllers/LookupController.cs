@@ -48,5 +48,12 @@ namespace POS_Accessories.Controllers
             return Json(result);
         }
 
+        [HttpGet("Products")]
+        public async Task<IActionResult> GetProducts()
+        {
+            var result = await _service.GetProducts();
+            return Json(result);
+        }
+
     }
 }

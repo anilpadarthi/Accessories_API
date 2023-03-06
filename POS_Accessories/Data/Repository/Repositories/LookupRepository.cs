@@ -75,6 +75,19 @@ namespace POS_Accessories.Data.Repository.Repositories
             return resultList;
         }
 
+        public async Task<IEnumerable<LookupResult>> GetProducts()
+        {
+            var resultList = await _context.Set<Product>()
+                             .Select(x => new LookupResult
+                             {
+                                 Id = x.ProductId,
+                                 Name = x.ProductName
+                             }).ToListAsync();
+
+            return resultList;
+        }
+
+
 
     }
 }

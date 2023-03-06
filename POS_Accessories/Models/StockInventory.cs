@@ -20,4 +20,8 @@ public partial class StockInventory
     public decimal? BuyPrice { get; set; }
 
     public int? SupplierId { get; set; }
+
+    public string? InvoiceNumber { get; set;}
+
+    public string? Status { get; set; }
 }

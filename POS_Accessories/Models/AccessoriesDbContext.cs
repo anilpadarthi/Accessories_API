@@ -152,6 +152,7 @@ public partial class AccessoriesDbContext : DbContext
             entity.Property(e => e.DeliveryCharges).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.DiscountAmount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ItemTotal).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.NetAmount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.OrderStatus)
                 .HasMaxLength(20)
@@ -163,7 +164,8 @@ public partial class AccessoriesDbContext : DbContext
             entity.Property(e => e.ShippingMode)
                 .HasMaxLength(20)
                 .IsUnicode(false);
-            entity.Property(e => e.TotalAmount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.TotalWithVATAmount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.TotalWithOutVATAmount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.TrackNumber).HasMaxLength(30);
             entity.Property(e => e.VatAmount).HasColumnType("decimal(18, 2)");
         });

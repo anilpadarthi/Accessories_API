@@ -5,9 +5,11 @@ namespace POS_Accessories.Data.Repository.Interfaces
 {
     public interface IOrderRepository: IRepository
     {
-        Task<Order> GetOrderAsync(int orderId);
-        Task<IEnumerable<Order>> GetAllOrdersAsync();
-        Task<IEnumerable<Order>> GetPagedOrdersAsync(GetPagedSearch request);
+        
+       
+        Task<Order> GetByIdAsync(int id);
+        Task<IEnumerable<Order>> GetByPagingAsync(GetPagedSearch request);
+        Task<int> GetTotalCountAsync(GetPagedSearch request);
         Task<IEnumerable<OrderDetailsMap>> GetOrderDetailsAsync(int orderId);
         Task<OrderDetailsMap> GetOrderDetailAsync(int orderDetailId);
         Task<IEnumerable<OrderDetailsMap>> GetPagedOrderDetailsAsync(int orderId);

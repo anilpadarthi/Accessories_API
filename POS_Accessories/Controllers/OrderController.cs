@@ -17,51 +17,47 @@ namespace POS_Accessories.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("GetPagedCategories")]
-        public async Task<IActionResult> GetPagedCategories(int? pageNo, int? pageSize, string? searchText)
+        [HttpPost("GetByPaging")]
+        public async Task<IActionResult> GetByPaging(GetPagedSearch request)
         {
-            GetPagedSearch request = new GetPagedSearch();
-            //request.mode = string.IsNullOrEmpty(searchText) ? DbActions.GetAll : DbActions.Search;
-            request.pageNo = pageNo ?? int.Parse(_configuration["PageNumber"]);
-            request.pageSize = pageSize ?? int.Parse(_configuration["PageSize"]);
-            request.searchText = searchText;
-            var result = await _service.GetAllOrdersAsync();
+            var result = await _service.GetByPagingAsync(request);
             return Json(result);
         }
-
-        [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _service.GetAllOrdersAsync();
-            return Json(result);
-        }
+      
 
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById(int id)
         {           
-            var result = await _service.GetOrderAsync(id);
+            var result = await _service.GetByIdAsync(id);
             return Json(result);
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create(Order request)
+        public async Task<IActionResult> Create(OrderDetailsModel request)
         {
-            var result = await _service.CreateOrderAsync(request);
+            var result = await _service.CreateAsync(request);
             return Json(result);
         }
 
         [HttpPut("Update")]
-        public async Task<IActionResult> Update(Order request)
+        public async Task<IActionResult> Update(OrderDetailsModel request)
         {
-            var result = await _service.UpdateOrderAsync(request);
+            var result = await _service.UpdateAsync(request);
+            return Json(result);
+        }
+
+        [HttpPut("UpdateStatus")]
+        public async Task<IActionResult> UpdateStatus(OrderStatusModel request)
+        {
+            var result = await _service.UpdateStatusAsync(request);
             return Json(result);
         }
 
         [HttpDelete("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _service.DeleteOrderAsync(id);
-            return Json(result);
+            //var result = await _service.DeleteAs(id);
+            return Json("");
         }
     }
 }

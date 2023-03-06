@@ -100,10 +100,20 @@ namespace POS_Accessories.Data.Repository.Repositories
             var query = _context.Set<Product>()
                .Where(w => w.Status != "D");
 
+            if (request.categoryId.HasValue && request.categoryId > 0)
+            {
+                query = query.Where(w => w.CategoryId == request.categoryId);
+            }
+            if (request.subCategoryId.HasValue && request.subCategoryId > 0)
+            {
+                query = query.Where(w => w.SubCategoryId == request.subCategoryId);
+            }
             if (!string.IsNullOrEmpty(request.searchText))
             {
                 query = query.Where(w => w.ProductName.Contains(request.searchText) || w.ProductCode.Contains(request.searchText));
             }
+
+           
             return await query.CountAsync();
         }
 

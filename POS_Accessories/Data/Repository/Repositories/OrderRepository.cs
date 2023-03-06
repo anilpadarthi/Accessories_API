@@ -12,30 +12,45 @@ namespace POS_Accessories.Data.Repository.Repositories
         }
 
 
-        public async Task<IEnumerable<Order>> GetAllOrdersAsync()
-        {
-            var result = await _context.Set<Order>().ToListAsync();
-            return result;
-        }
-
-        public async Task<Order> GetOrderAsync(int orderId)
-        {
-            var result = await _context.Set<Order>()
-                .Include(i => i.OrderDetailsMaps)
-                .Where(w => w.OrderId == orderId)
-                .FirstOrDefaultAsync();
-            return result;
-        }
-
         public async Task<IEnumerable<Order>> GetPagedOrdersAsync(GetPagedSearch request)
         {
             var result = await _context.Set<Order>().ToListAsync();
             return result;
         }
 
+        public async Task<Order> GetByIdAsync(int id)
+        {
+            return await _context.Set<Order>()
+                .Where(w => w.OrderId == id)
+                .FirstOrDefaultAsync();
+        }
+
+
+
+        public async Task<IEnumerable<Order>> GetByPagingAsync(GetPagedSearch request)
+        {
+            var query = _context.Set<Order>();
+
+
+            var result = await query
+                .OrderByDescending(o => o.CreatedDate)
+                .Skip((request.pageNo - 1) * request.pageSize)
+                .Take(request.pageSize)
+                .ToListAsync();
+
+            return result;
+        }
+
+        public async Task<int> GetTotalCountAsync(GetPagedSearch request)
+        {
+            var query = _context.Set<Order>();
+
+            return await query.CountAsync();
+        }
+
         public async Task<IEnumerable<OrderDetailsMap>> GetOrderDetailsAsync(int orderId)
         {
-            var result = await _context.Set<OrderDetailsMap>().Where(w => w.OrderId == orderId).ToListAsync();
+            var result = await _context.Set<OrderDetailsMap>().Where(w => w.OrderId == orderId && w.IsActive == true).ToListAsync();
             return result;
         }
 

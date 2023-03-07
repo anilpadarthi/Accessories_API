@@ -25,9 +25,9 @@ namespace POS_Accessories.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllActiveConfigurationList()
         {
-            var result = await _service.GetAllAsync();
+            var result = await _service.GetAllActiveConfigurationListAsync();
             return Json(result);
         }
 

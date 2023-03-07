@@ -24,11 +24,12 @@ namespace POS_Accessories.Business.Services
                 var result = await _configurationRepository.ValidateUnique(request);
                 if (result != null)
                 {
-                    response = Utility.CreateResponse("Name already exist", HttpStatusCode.Conflict);
+                    response = Utility.CreateResponse("Configuration already exist", HttpStatusCode.Conflict);
                 }
                 else
                 {
                     request.Status = "A";
+                    request.IsActive = true;
                     await _configurationRepository.CreateAsync(request);
                     response = Utility.CreateResponse("Created successfully", HttpStatusCode.Created);
                 }
@@ -76,12 +77,12 @@ namespace POS_Accessories.Business.Services
             return response;
         }
 
-        public async Task<CommonResponse> GetAllAsync()
+        public async Task<CommonResponse> GetAllActiveConfigurationListAsync()
         {
             CommonResponse response = new CommonResponse();
             try
             {
-                var result = await _configurationRepository.GetAllAsync();
+                var result = await _configurationRepository.GetAllActiveConfigurationListAsync();
                 response = Utility.CreateResponse(result, HttpStatusCode.OK);
             }
             catch (Exception ex)

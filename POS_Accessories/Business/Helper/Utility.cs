@@ -7,7 +7,6 @@ namespace POS_Accessories.Business.Helper
 {
     public static class Utility
     {
-
         public class SendMail
         {
 

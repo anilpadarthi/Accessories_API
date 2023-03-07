@@ -11,7 +11,7 @@ namespace POS_Accessories.Data.Repository.Interfaces
         Task UpdateStatusAsync(int id, string status);
         Task<Configuration> GetByIdAsync(int id);
         Task<Configuration> ValidateUnique(Configuration request);
-        Task<IEnumerable<Configuration>> GetAllAsync();
+        Task<IEnumerable<Configuration>> GetAllActiveConfigurationListAsync();
         Task<IEnumerable<Configuration>> GetByPagingAsync(GetPagedSearch request);
         Task<int> GetTotalCountAsync(GetPagedSearch request);
 

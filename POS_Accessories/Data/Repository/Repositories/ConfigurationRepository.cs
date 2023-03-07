@@ -29,9 +29,9 @@ namespace POS_Accessories.Data.Repository.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Configuration>> GetAllAsync()
+        public async Task<IEnumerable<Configuration>> GetAllActiveConfigurationListAsync()
         {
-            var resultList = await _context.Set<Configuration>().ToListAsync();
+            var resultList = await _context.Set<Configuration>().Where(w => w.IsActive == true).ToListAsync();
             return resultList;
         }
 
@@ -44,16 +44,13 @@ namespace POS_Accessories.Data.Repository.Repositories
         public async Task<Configuration> ValidateUnique(Configuration request)
         {
             return await _context.Set<Configuration>()
-                .Where(w => w.ConfigurationTypeId == request.ConfigurationTypeId && w.FromDate == request.FromDate && w.ToDate == request.ToDate)
+                .Where(w => w.ConfigurationTypeId == request.ConfigurationTypeId && w.IsActive == true)
                 .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Configuration>> GetByPagingAsync(GetPagedSearch request)
         {
-            var query = _context.Set<Configuration>()
-                .Where(w => w.Status != "D");
-
-
+            var query = _context.Set<Configuration>().Where(w => w.Status != "D");
 
             var result = await query
                 .OrderBy(o => o.ConfigurationTypeId)
@@ -66,13 +63,9 @@ namespace POS_Accessories.Data.Repository.Repositories
 
         public async Task<int> GetTotalCountAsync(GetPagedSearch request)
         {
-            var query = _context.Set<Configuration>()
-               .Where(w => w.Status != "D");
-
-
+            var query = _context.Set<Configuration>().Where(w => w.Status != "D");
             return await query.CountAsync();
         }
-
 
     }
 }

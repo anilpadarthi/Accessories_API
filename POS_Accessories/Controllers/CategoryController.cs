@@ -40,21 +40,21 @@ namespace POS_Accessories.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Category request)
+        public async Task<IActionResult> Create(CategoryRequestModel request)
         {
             var result = await _service.CreateAsync(request);
             return Json(result);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(Category request)
+        public async Task<IActionResult> Update(CategoryRequestModel request)
         {
             var result = await _service.UpdateAsync(request);
             return Json(result);
         }
 
         [HttpPut("UpdateStatus")]
-        public async Task<IActionResult> UpdateStatus(Category request)
+        public async Task<IActionResult> UpdateStatus(CategoryRequestModel request)
         {
             var result = await _service.UpdateStatusAsync(request.CategoryId, request.Status);
             return Json(result);

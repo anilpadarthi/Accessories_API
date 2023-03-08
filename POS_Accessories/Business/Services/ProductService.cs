@@ -34,7 +34,7 @@ namespace POS_Accessories.Business.Services
                 else
                 {
                     var createCriteria = _mapper.Map<Product>(request);
-                    request.Status = "A";
+                    createCriteria.Status = "A";
                     await _productRepository.CreateAsync(createCriteria);
 
                     if (request.PriceList != null)

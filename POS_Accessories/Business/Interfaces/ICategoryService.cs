@@ -6,8 +6,8 @@ namespace POS_Accessories.Business.Interfaces
 {
     public interface ICategoryService
     {
-        Task<CommonResponse> CreateAsync(Category request);
-        Task<CommonResponse> UpdateAsync(Category request);
+        Task<CommonResponse> CreateAsync(CategoryRequestModel request);
+        Task<CommonResponse> UpdateAsync(CategoryRequestModel request);
         Task<CommonResponse> UpdateStatusAsync(int categoryId, string status);
         Task<CommonResponse> GetByIdAsync(int categoryId);
         Task<CommonResponse> GetAllAsync();

@@ -14,7 +14,7 @@ namespace POS_Accessories.Data.Repository.Repositories
 
         public async Task<IEnumerable<LookupResult>> GetCategories()
         {
-            var resultList = await _context.Set<Category>()
+            var resultList = await _context.Set<CategoryRequestModel>()
                              .Where(w => w.Status != "D")
                              .Select(x => new LookupResult
                              {

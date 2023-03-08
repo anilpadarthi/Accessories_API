@@ -9,6 +9,7 @@ namespace POS_Accessories.Business.Helper
         {
             CreateMap<Product, ProductRequestModel>().ReverseMap();
             CreateMap<ProductPriceMap, ProductPriceRequestModel>().ReverseMap();
+            CreateMap<Category, CategoryRequestModel>().ReverseMap();
         }
     }
 }

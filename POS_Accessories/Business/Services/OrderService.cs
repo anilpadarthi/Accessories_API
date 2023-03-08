@@ -448,31 +448,31 @@ namespace POS_Accessories.Business.Services
         private async Task<int> CreateOrder(OrderDetailsModel request)
         {
             var orderModel = new Order()
-            {
-                UserId = request.UserId,
-                ShopId = request.ShopId,
-                ItemTotal = request.ItemTotal,
-                NetAmount = request.ItemTotal,
-                VatAmount = request.VatAmount,
-                DiscountAmount = request.DiscountAmount,
-                DeliveryCharges = request.DeliveryCharges,
-                TotalWithOutVATAmount = request.TotalWithOutVATAmount,
-                TotalWithVATAmount = request.TotalWithVATAmount,
-                VatPercentage = request.VatPercentage,
-                DiscountPercentage = request.DiscountPercentage,
-                CouponCode = request.CouponCode,
-                PaymentMethod = request.PaymentMethod,
-                OrderStatus = request.OrderStatus,
-                ShippingMode = request.ShippingMode,
-                TrackNumber = request.TrackNumber,
-                ShippingAddress = request.ShippingAddress,
-                CreatedDate = DateTime.Now,
-                CreatedBy = 1
-            };
-            _orderRepository.Add(orderModel);
-            await _orderRepository.SaveChangesAsync();
+                {
+                    UserId = request.UserId,
+                    ShopId = request.ShopId,
+                    ItemTotal = request.ItemTotal,
+                    NetAmount = request.ItemTotal,
+                    VatAmount = request.VatAmount,
+                    DiscountAmount = request.DiscountAmount,
+                    DeliveryCharges = request.DeliveryCharges,
+                    TotalWithOutVATAmount = request.TotalWithOutVATAmount,
+                    TotalWithVATAmount = request.TotalWithVATAmount,
+                    VatPercentage = request.VatPercentage,
+                    DiscountPercentage = request.DiscountPercentage,
+                    CouponCode = request.CouponCode,
+                    PaymentMethod = request.PaymentMethod,
+                    OrderStatus = request.OrderStatus,
+                    ShippingMode = request.ShippingMode,
+                    TrackNumber = request.TrackNumber,
+                    ShippingAddress = request.ShippingAddress,
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = 1
+                };
+                _orderRepository.Add(orderModel);
+                await _orderRepository.SaveChangesAsync();
 
-            return orderModel.OrderId;
+                return orderModel.OrderId;
         }
 
         private async Task UpdateOrder(OrderDetailsModel request)
@@ -504,7 +504,7 @@ namespace POS_Accessories.Business.Services
             OrderHistoryMap.CreatedBy = 1;
 
             _orderRepository.Add(OrderHistoryMap);
-            _orderRepository.SaveChangesAsync();
+            await _orderRepository.SaveChangesAsync();
         }
 
     }

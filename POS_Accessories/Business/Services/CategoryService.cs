@@ -1,4 +1,5 @@
-﻿using POS_Accessories.Business.Helper;
+﻿using AutoMapper;
+using POS_Accessories.Business.Helper;
 using POS_Accessories.Business.Interfaces;
 using POS_Accessories.Data.Repository.Interfaces;
 using POS_Accessories.Models;
@@ -11,12 +12,14 @@ namespace POS_Accessories.Business.Services
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IMapper _mapper;
 
-        public CategoryService(ICategoryRepository categoryRepository)
+        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
-        public async Task<CommonResponse> CreateAsync(Category request)
+        public async Task<CommonResponse> CreateAsync(CategoryRequestModel request)
         {
             CommonResponse response = new CommonResponse();
             try
@@ -28,8 +31,9 @@ namespace POS_Accessories.Business.Services
                 }
                 else
                 {
-                    request.Status = "A";
-                    await _categoryRepository.CreateAsync(request);
+                    var createCriteria = _mapper.Map<Category>(request);
+                    createCriteria.Status = "A";
+                    await _categoryRepository.CreateAsync(createCriteria);
                     response = Utility.CreateResponse("Created successfully", HttpStatusCode.Created);
                 }
             }
@@ -39,7 +43,7 @@ namespace POS_Accessories.Business.Services
             }
             return response;
         }
-        public async Task<CommonResponse> UpdateAsync(Category request)
+        public async Task<CommonResponse> UpdateAsync(CategoryRequestModel request)
         {
             CommonResponse response = new CommonResponse();
             try
@@ -51,7 +55,8 @@ namespace POS_Accessories.Business.Services
                 }
                 else
                 {
-                    await _categoryRepository.UpdateAsync(request);
+                    var createCriteria = _mapper.Map<Category>(request);
+                    await _categoryRepository.UpdateAsync(createCriteria);
                     response = Utility.CreateResponse("Updated successfully", HttpStatusCode.OK);
                 }
             }

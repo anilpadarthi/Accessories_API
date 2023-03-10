@@ -179,11 +179,6 @@ public partial class AccessoriesDbContext : DbContext
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
             entity.Property(e => e.SalePrice).HasColumnType("decimal(18, 2)");
-
-            entity.HasOne(d => d.Order).WithMany(p => p.OrderDetailsMaps)
-                .HasForeignKey(d => d.OrderId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_OrderDetails_Order");
         });
 
         modelBuilder.Entity<OrderHistoryMap>(entity =>
@@ -201,11 +196,6 @@ public partial class AccessoriesDbContext : DbContext
             entity.Property(e => e.PaymentMethod)
                 .HasMaxLength(20)
                 .IsUnicode(false);
-
-            entity.HasOne(d => d.Order).WithMany(p => p.OrderHistoryMaps)
-                .HasForeignKey(d => d.OrderId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_OrderHistory_Order");
         });
 
         modelBuilder.Entity<OrderPaymentMap>(entity =>

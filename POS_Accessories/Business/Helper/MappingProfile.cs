@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using POS_Accessories.Models;
+using POS_Accessories.Models.Request;
 
 namespace POS_Accessories.Business.Helper
 {
@@ -9,7 +10,8 @@ namespace POS_Accessories.Business.Helper
         {
             CreateMap<Product, ProductRequestModel>().ReverseMap();
             CreateMap<ProductPriceMap, ProductPriceRequestModel>().ReverseMap();
-            CreateMap<Category, CategoryRequestModel>().ReverseMap();
+            CreateMap<OrderDetailsMap, OrderProductModel>().ReverseMap();
+            CreateMap<Order, OrderDetailsModel>().ForMember(dest=>dest.Items,act=>act.MapFrom(src => src.OrderDetailsMaps)).ReverseMap();
         }
     }
 }

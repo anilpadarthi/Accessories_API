@@ -1,4 +1,6 @@
-﻿using POS_Accessories.Business.Helper;
+﻿using AutoMapper;
+using Azure.Core;
+using POS_Accessories.Business.Helper;
 using POS_Accessories.Business.Interfaces;
 using POS_Accessories.Data.Repository.Interfaces;
 using POS_Accessories.Models;
@@ -12,10 +14,12 @@ namespace POS_Accessories.Business.Services
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository OrderRepository)
+        public OrderService(IOrderRepository OrderRepository,IMapper mapper)
         {
             _orderRepository = OrderRepository;
+            _mapper = mapper;
         }
 
         public async Task<CommonResponse> CreateAsync(OrderDetailsModel request)
@@ -35,8 +39,8 @@ namespace POS_Accessories.Business.Services
                     {
                         OrderId = orderId,
                         ProductId = item.ProductId,
-                        SalePrice = item.Price,
-                        Qty = item.Quantity,
+                        SalePrice = item.SalePrice,
+                        Qty = item.Qty,
                         ProductColourId = item.ProductColourId,
                         ProductSizeId = item.ProductSizeId,
                         IsActive = true,
@@ -75,8 +79,8 @@ namespace POS_Accessories.Business.Services
                         var IsSavedItem = request.Items.Where(e => e.ProductId == item.ProductId).FirstOrDefault();
                         if (IsSavedItem != null)
                         {
-                            item.Qty = IsSavedItem.Quantity;
-                            item.SalePrice = IsSavedItem.Price;
+                            item.Qty = IsSavedItem.Qty;
+                            item.SalePrice = IsSavedItem.SalePrice;
                             item.ProductSizeId = IsSavedItem.ProductSizeId;
                             item.ProductColourId = IsSavedItem.ProductColourId;
                             item.ModifiedDate = DateTime.Now;
@@ -98,8 +102,8 @@ namespace POS_Accessories.Business.Services
                             {
                                 OrderId = orderId,
                                 ProductId = item.ProductId,
-                                SalePrice = item.Price,
-                                Qty = item.Quantity,
+                                SalePrice = item.SalePrice,
+                                Qty = item.Qty,
                                 ProductColourId = item.ProductColourId,
                                 ProductSizeId = item.ProductSizeId,
                                 IsActive = true,
@@ -155,7 +159,8 @@ namespace POS_Accessories.Business.Services
             {
                 var result = await _orderRepository.GetByIdAsync(id);
                 result.OrderDetailsMaps = (await _orderRepository.GetOrderDetailsAsync(id)).ToList();
-                response = Utility.CreateResponse(result, HttpStatusCode.OK);
+                var orderDetails = _mapper.Map<OrderDetailsModel>(result);
+                response = Utility.CreateResponse(orderDetails, HttpStatusCode.OK);
             }
             catch (Exception ex)
             {

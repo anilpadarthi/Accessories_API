@@ -28,6 +28,4 @@ public partial class OrderDetailsMap
     public int? CreatedBy { get; set; }
 
     public int? ModifiedBy { get; set; }
-
-    public virtual Order Order { get; set; } = null!;
 }

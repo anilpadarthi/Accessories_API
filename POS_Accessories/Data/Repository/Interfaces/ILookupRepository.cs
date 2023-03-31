@@ -10,5 +10,6 @@ namespace POS_Accessories.Data.Repository.Interfaces
         Task<IEnumerable<LookupResult>> GetAvailableSizes();
         Task<IEnumerable<LookupResult>> GetConfigurationTypes();
         Task<IEnumerable<LookupResult>> GetProducts();
+        Task<IEnumerable<LookupResult>> GetSuppliers();
     }
 }

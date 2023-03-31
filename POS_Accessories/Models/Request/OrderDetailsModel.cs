@@ -13,7 +13,7 @@
         public decimal? TotalWithOutVATAmount { get; set; }
         public string? CouponCode { get; set; }
         public string? OrderStatus { get; set; }
-        public string PaymentMethod { get; set; }
+        public string? PaymentMethod { get; set; }
         public string? ShippingMode { get; set; }
         public string? TrackNumber { get; set; }
         public string? ShippingAddress { get; set; }

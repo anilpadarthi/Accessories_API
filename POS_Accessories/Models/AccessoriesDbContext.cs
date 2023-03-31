@@ -17,6 +17,7 @@ public partial class AccessoriesDbContext : DbContext
 
     public virtual DbSet<User> user { get; set; }
     public virtual DbSet<Category> Categories { get; set; }
+    public virtual DbSet<Supplier> Supplier { get; set; }
 
     public virtual DbSet<Colour> Colours { get; set; }
 
@@ -61,12 +62,13 @@ public partial class AccessoriesDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=122.175.6.200,1486;Database=AccessoriesDB;User ID=sa;Password=angel#123;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=184.168.47.10;Database=AngleSims;User ID=anil;Password=anil@123;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>();
         modelBuilder.Entity<ConfigurationType>();
+        modelBuilder.Entity<Supplier>();
 
         modelBuilder.Entity<Configuration>(entity =>
         {

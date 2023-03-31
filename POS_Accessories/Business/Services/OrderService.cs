@@ -484,6 +484,7 @@ namespace POS_Accessories.Business.Services
         {
             var orderModel = await _orderRepository.GetByIdAsync(request.OrderId ?? 0);
             orderModel.ItemTotal = request.ItemTotal;
+            orderModel.NetAmount = request.ItemTotal;
             orderModel.VatAmount = request.VatAmount;
             orderModel.DiscountAmount = request.DiscountAmount;
             orderModel.DeliveryCharges = request.DeliveryCharges;

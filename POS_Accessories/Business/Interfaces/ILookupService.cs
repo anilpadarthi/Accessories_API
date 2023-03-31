@@ -11,5 +11,8 @@ namespace POS_Accessories.Business.Interfaces
         Task<CommonResponse> GetConfigurationTypes();
         Task<CommonResponse> GetProducts();
         Task<CommonResponse> GetSuppliers();
+        Task<CommonResponse> GetOrderStatusTypes();
+        Task<CommonResponse> GetOrderPaymentTypes();
+        Task<CommonResponse> GetOrderDeliveryTypes();
     }
 }

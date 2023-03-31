@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using POS_Accessories.Models.Response;
 
 namespace POS_Accessories.Models;
 
@@ -28,6 +29,11 @@ public partial class AccessoriesDbContext : DbContext
     public virtual DbSet<CouponMap> CouponMaps { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
+    public virtual DbSet<WareHouseResult> WareHouseResult { get; set; }
+    public virtual DbSet<StockPurchaseHistoryResult> StockPurchaseHistoryResult { get; set; }
+    public virtual DbSet<OrderStatusType> OrderStatusType { get; set; }
+    public virtual DbSet<OrderPaymentType> OrderPaymentType { get; set; }
+    public virtual DbSet<OrderDeliveryType> OrderDeliveryType { get; set; }
 
     public virtual DbSet<OrderDetailsMap> OrderDetailsMaps { get; set; }
 
@@ -67,6 +73,11 @@ public partial class AccessoriesDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>();
+        modelBuilder.Entity<WareHouseResult>().HasNoKey();
+        modelBuilder.Entity<StockPurchaseHistoryResult>().HasNoKey();
+        modelBuilder.Entity<OrderStatusType>();
+        modelBuilder.Entity<OrderPaymentType>();
+        modelBuilder.Entity<OrderDeliveryType>();
         modelBuilder.Entity<ConfigurationType>();
         modelBuilder.Entity<Supplier>();
 

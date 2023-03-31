@@ -11,5 +11,8 @@ namespace POS_Accessories.Data.Repository.Interfaces
         Task<IEnumerable<LookupResult>> GetConfigurationTypes();
         Task<IEnumerable<LookupResult>> GetProducts();
         Task<IEnumerable<LookupResult>> GetSuppliers();
+        Task<IEnumerable<LookupResult>> GetOrderStatusTypes();
+        Task<IEnumerable<LookupResult>> GetOrderPaymentTypes();
+        Task<IEnumerable<LookupResult>> GetOrderDeliveryTypes();
     }
 }

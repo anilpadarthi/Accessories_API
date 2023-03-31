@@ -120,6 +120,53 @@ namespace POS_Accessories.Business.Services
             return response;
         }
 
+        public async Task<CommonResponse> GetOrderStatusTypes()
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var list = await _repository.GetOrderStatusTypes();
+                response = Utility.CreateResponse(list, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
+        }
+
+
+        public async Task<CommonResponse> GetOrderPaymentTypes()
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var list = await _repository.GetOrderPaymentTypes();
+                response = Utility.CreateResponse(list, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
+        }
+
+
+        public async Task<CommonResponse> GetOrderDeliveryTypes()
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var list = await _repository.GetOrderDeliveryTypes();
+                response = Utility.CreateResponse(list, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
+        }
+
 
     }
 }

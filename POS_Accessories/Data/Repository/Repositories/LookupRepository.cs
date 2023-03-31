@@ -99,6 +99,41 @@ namespace POS_Accessories.Data.Repository.Repositories
             return resultList;
         }
 
+        public async Task<IEnumerable<LookupResult>> GetOrderStatusTypes()
+        {
+            var resultList = await _context.Set<OrderStatusType>()
+                             .Select(x => new LookupResult
+                             {
+                                 Id = x.OrderStatusTypeId,
+                                 Name = x.Name
+                             }).ToListAsync();
+
+            return resultList;
+        }
+
+        public async Task<IEnumerable<LookupResult>> GetOrderPaymentTypes()
+        {
+            var resultList = await _context.Set<OrderPaymentType>()
+                             .Select(x => new LookupResult
+                             {
+                                 Id = x.OrderPaymentTypeId,
+                                 Name = x.Name
+                             }).ToListAsync();
+
+            return resultList;
+        }
+
+        public async Task<IEnumerable<LookupResult>> GetOrderDeliveryTypes()
+        {
+            var resultList = await _context.Set<OrderDeliveryType>()
+                             .Select(x => new LookupResult
+                             {
+                                 Id = x.OrderDeliveryTypeId,
+                                 Name = x.Name
+                             }).ToListAsync();
+
+            return resultList;
+        }
 
 
     }

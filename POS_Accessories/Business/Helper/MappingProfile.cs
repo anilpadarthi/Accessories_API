@@ -9,6 +9,7 @@ namespace POS_Accessories.Business.Helper
         public MappingProfile()
         {
             CreateMap<Product, ProductRequestModel>().ReverseMap();
+            CreateMap<Category, CategoryRequestModel>().ReverseMap();   
             CreateMap<ProductPriceMap, ProductPriceRequestModel>().ReverseMap();
             CreateMap<OrderDetailsMap, OrderProductModel>().ReverseMap();
             CreateMap<Order, OrderDetailsModel>().ForMember(dest=>dest.Items,act=>act.MapFrom(src => src.OrderDetailsMaps)).ReverseMap();

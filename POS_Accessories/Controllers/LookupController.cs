@@ -69,14 +69,14 @@ namespace POS_Accessories.Controllers
             return Json(result);
         }
 
-        [HttpGet("GetOrderPaymentTypes")]
+        [HttpGet("OrderPaymentTypes")]
         public async Task<IActionResult> GetOrderPaymentTypes()
         {
             var result = await _service.GetOrderPaymentTypes();
             return Json(result);
         }
 
-        [HttpGet("GetOrderDeliveryTypes")]
+        [HttpGet("OrderDeliveryTypes")]
         public async Task<IActionResult> GetOrderDeliveryTypes()
         {
             var result = await _service.GetOrderDeliveryTypes();

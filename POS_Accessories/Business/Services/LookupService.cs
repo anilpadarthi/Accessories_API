@@ -167,6 +167,69 @@ namespace POS_Accessories.Business.Services
             return response;
         }
 
+        public async Task<CommonResponse> GetAreas()
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var list = await _repository.GetAreas();
+                response = Utility.CreateResponse(list, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
+        }
+
+
+        public async Task<CommonResponse> GetShops(int areaId)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var list = await _repository.GetShops(areaId);
+                response = Utility.CreateResponse(list, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
+        }
+
+
+        public async Task<CommonResponse> GetAgents()
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var list = await _repository.GetAgents();
+                response = Utility.CreateResponse(list, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
+        }
+
+
+        public async Task<CommonResponse> GetManagers()
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var list = await _repository.GetManagers();
+                response = Utility.CreateResponse(list, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
+        }
+
 
     }
 }

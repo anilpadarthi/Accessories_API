@@ -54,9 +54,15 @@ namespace POS_Accessories.Data.Repository.Repositories
             return result;
         }
 
-        public async Task<IEnumerable<OrderHistoryMap>> GetOrderHistoryAsync(int orderId)
+        public async Task<IEnumerable<OrderHistoryMap>> GetOrderHistoryAsync(GetPagedSearch request)
         {
-            var result = await _context.Set<OrderHistoryMap>().Where(w => w.OrderId == orderId).ToListAsync();
+            var query = _context.Set<OrderHistoryMap>().Where(w => w.OrderId == request.id);
+            var result = await query
+               .OrderByDescending(o => o.CreatedDate)
+               .Skip((request.pageNo - 1) * request.pageSize)
+               .Take(request.pageSize)
+               .ToListAsync();
+
             return result;
         }
 

@@ -23,11 +23,11 @@ namespace POS_Accessories.Controllers
             var result = await _service.GetByPagingAsync(request);
             return Json(result);
         }
-      
+
 
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById(int id)
-        {           
+        {
             var result = await _service.GetByIdAsync(id);
             return Json(result);
         }
@@ -58,6 +58,13 @@ namespace POS_Accessories.Controllers
         {
             //var result = await _service.DeleteAs(id);
             return Json("");
+        }
+
+        [HttpPost("GetOrderHistory")]
+        public async Task<IActionResult> GetOrderHistory(GetPagedSearch request)
+        {
+            var result = await _service.GetOrderHistoryAsync(request);
+            return Json(result);
         }
     }
 }

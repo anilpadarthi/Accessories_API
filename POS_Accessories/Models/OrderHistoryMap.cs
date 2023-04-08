@@ -9,10 +9,10 @@ public partial class OrderHistoryMap
 
     public int OrderId { get; set; }
 
-    public string OrderStatus { get; set; } = null!;
+    public int? OrderStatusId { get; set; }
 
-    public string? PaymentMethod { get; set; }
-
+    public int? PaymentMethodId { get; set; }
+    public int? ShippingModeId { get; set; }
     public bool? IsActive { get; set; }
 
     public string? Comments { get; set; }

@@ -16,7 +16,7 @@ namespace POS_Accessories.Business.Services
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository OrderRepository,IMapper mapper)
+        public OrderService(IOrderRepository OrderRepository, IMapper mapper)
         {
             _orderRepository = OrderRepository;
             _mapper = mapper;
@@ -51,7 +51,7 @@ namespace POS_Accessories.Business.Services
                 }
                 await _orderRepository.SaveChangesAsync();
 
-                await CreateHistoryRecord(orderId, request.OrderStatus, request.PaymentMethod, "Created");
+                await CreateHistoryRecord(request, "Created");
                 response = Utility.CreateResponse("Order placed successfully", HttpStatusCode.Created);
 
             }
@@ -115,7 +115,7 @@ namespace POS_Accessories.Business.Services
                     }
                     await _orderRepository.SaveChangesAsync();
 
-                    await CreateHistoryRecord(orderId, request.OrderStatus, request.PaymentMethod, "Updated Order Details");
+                    await CreateHistoryRecord(request, "Updated Order Details");
                     response = Utility.CreateResponse("Order updated successfully", HttpStatusCode.OK);
                 }
             }
@@ -134,15 +134,22 @@ namespace POS_Accessories.Business.Services
             try
             {
                 var order = await _orderRepository.GetByIdAsync(request.OrderId);
-                order.OrderStatus = request.OrderStatus;
-                order.PaymentMethod = request.PaymentMethod;
-                order.ShippingMode = request.ShippingMode;
+                order.OrderStatusId = request.OrderStatusId;
+                order.OrderPaymentMethodId = request.PaymentMethodId;
+                order.OrderShippingModeId = request.ShippingModeId;
                 order.TrackNumber = request.TrackNumber;
                 order.ShippingAddress = request.ShippingAddress;
-                _orderRepository.SaveChangesAsync();
-                response = Utility.CreateResponse("Updated status successfully", HttpStatusCode.OK);
-                await CreateHistoryRecord(request.OrderId, request.OrderStatus, request.PaymentMethod, "Updated_" + request.ShippingMode + "_" + request.TrackNumber);
+                order.ModifiedBy = 1;
+                order.ModifiedDate = DateTime.Now;
+                await _orderRepository.SaveChangesAsync();
 
+                OrderDetailsModel request1 = new OrderDetailsModel();
+                request1.OrderId = request.OrderId;
+                request1.OrderStatusId = request.OrderStatusId;
+                request1.PaymentMethodId = request.PaymentMethodId;
+                request1.ShippingModeId = request.ShippingModeId;
+                await CreateHistoryRecord(request1, "Updated_" + request.ShippingModeId + "_" + request.TrackNumber);
+                response = Utility.CreateResponse("Updated status successfully", HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
@@ -186,6 +193,24 @@ namespace POS_Accessories.Business.Services
             }
             return response;
         }
+
+        public async Task<CommonResponse> GetOrderHistoryAsync(GetPagedSearch request)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                var result = await _orderRepository.GetOrderHistoryAsync(request);
+
+                response = Utility.CreateResponse(result, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                response = response.HandleException(ex);
+            }
+            return response;
+
+        }
+
 
         //#region Order
         //public async Task<IEnumerable<string>> CreateOrderAsync(Order orderModel)
@@ -453,31 +478,31 @@ namespace POS_Accessories.Business.Services
         private async Task<int> CreateOrder(OrderDetailsModel request)
         {
             var orderModel = new Order()
-                {
-                    UserId = request.UserId,
-                    ShopId = request.ShopId,
-                    ItemTotal = request.ItemTotal,
-                    NetAmount = request.ItemTotal,
-                    VatAmount = request.VatAmount,
-                    DiscountAmount = request.DiscountAmount,
-                    DeliveryCharges = request.DeliveryCharges,
-                    TotalWithOutVATAmount = request.TotalWithOutVATAmount,
-                    TotalWithVATAmount = request.TotalWithVATAmount,
-                    VatPercentage = request.VatPercentage,
-                    DiscountPercentage = request.DiscountPercentage,
-                    CouponCode = request.CouponCode,
-                    PaymentMethod = request.PaymentMethod,
-                    OrderStatus = request.OrderStatus,
-                    ShippingMode = request.ShippingMode,
-                    TrackNumber = request.TrackNumber,
-                    ShippingAddress = request.ShippingAddress,
-                    CreatedDate = DateTime.Now,
-                    CreatedBy = 1
-                };
-                _orderRepository.Add(orderModel);
-                await _orderRepository.SaveChangesAsync();
+            {
+                UserId = request.UserId,
+                ShopId = request.ShopId,
+                ItemTotal = request.ItemTotal,
+                NetAmount = request.ItemTotal,
+                VatAmount = request.VatAmount,
+                DiscountAmount = request.DiscountAmount,
+                DeliveryCharges = request.DeliveryCharges,
+                TotalWithOutVATAmount = request.TotalWithOutVATAmount,
+                TotalWithVATAmount = request.TotalWithVATAmount,
+                VatPercentage = request.VatPercentage,
+                DiscountPercentage = request.DiscountPercentage,
+                CouponCode = request.CouponCode,
+                OrderPaymentMethodId = request.PaymentMethodId,
+                OrderStatusId = request.OrderStatusId,
+                OrderShippingModeId = request.ShippingModeId,
+                TrackNumber = request.TrackNumber,
+                ShippingAddress = request.ShippingAddress,
+                CreatedDate = DateTime.Now,
+                CreatedBy = 1
+            };
+            _orderRepository.Add(orderModel);
+            await _orderRepository.SaveChangesAsync();
 
-                return orderModel.OrderId;
+            return orderModel.OrderId;
         }
 
         private async Task UpdateOrder(OrderDetailsModel request)
@@ -498,12 +523,13 @@ namespace POS_Accessories.Business.Services
             await _orderRepository.SaveChangesAsync();
         }
 
-        private async Task CreateHistoryRecord(int orderId, string orderStatus, string paymentMethod, string comments)
+        private async Task CreateHistoryRecord(OrderDetailsModel request, string? comments)
         {
             OrderHistoryMap OrderHistoryMap = new OrderHistoryMap();
-            OrderHistoryMap.OrderId = orderId;
-            OrderHistoryMap.OrderStatus = orderStatus;
-            OrderHistoryMap.PaymentMethod = paymentMethod;
+            OrderHistoryMap.OrderId = request.OrderId ?? 0;
+            OrderHistoryMap.OrderStatusId = request.OrderStatusId;
+            OrderHistoryMap.PaymentMethodId = request.PaymentMethodId;
+            OrderHistoryMap.ShippingModeId = request.ShippingModeId;
             OrderHistoryMap.Comments = comments;
             OrderHistoryMap.IsActive = true;
             OrderHistoryMap.CreatedDate = DateTime.Now;

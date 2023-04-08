@@ -15,7 +15,7 @@ namespace POS_Accessories.Business.Interfaces
         Task<CommonResponse> UpdateStatusAsync(OrderStatusModel request);
         Task<CommonResponse> GetByIdAsync(int id);
         Task<CommonResponse> GetByPagingAsync(GetPagedSearch request);
-
+        Task<CommonResponse> GetOrderHistoryAsync(GetPagedSearch request);
 
 
         //Task<IEnumerable<string>> CreateOrderAsync(Order request);
@@ -28,7 +28,7 @@ namespace POS_Accessories.Business.Interfaces
         //Task<IEnumerable<OrderDetailsMap>> GetOrderDetailsAsync(int orderId);
         //Task<OrderDetailsMap> GetOrderDetailAsync(int orderDetailId);
         //Task<IEnumerable<OrderDetailsMap>> GetPagedOrderDetailsAsync(int orderId);
-        //Task<IEnumerable<OrderHistoryMap>> GetOrderHistoryAsync(int orderId);
+
         //Task<OrderHistoryMap> GetOrderHistoryDetailsAsync(int orderHistoryId);
         //Task<IEnumerable<OrderHistoryMap>> GetPagedOrderHistoryDetailsAsync(int orderId);
         //Task<IEnumerable<OrderPaymentMap>> GetOrderPaymentsAsync(int orderId);

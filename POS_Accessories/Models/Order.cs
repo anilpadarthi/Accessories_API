@@ -18,12 +18,6 @@ public partial class Order
     public decimal? TotalWithVATAmount { get; set; }
     public decimal? TotalWithOutVATAmount { get; set; }
 
-    public string OrderStatus { get; set; } = null!;
-
-    public string PaymentMethod { get; set; } = null!;
-
-    public string? ShippingMode { get; set; }
-
     public string? TrackNumber { get; set; }
 
     public string? ShippingAddress { get; set; }
@@ -45,6 +39,9 @@ public partial class Order
     public int? CreatedBy { get; set; }
 
     public int? ModifiedBy { get; set; }
+    public int? OrderStatusId { get; set; }
+    public int? OrderPaymentMethodId { get; set; }
+    public int? OrderShippingModeId { get; set; }
 
     public virtual IList<OrderDetailsMap> OrderDetailsMaps { get; set; } 
 

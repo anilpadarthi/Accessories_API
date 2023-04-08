@@ -17,6 +17,7 @@ public partial class AccessoriesDbContext : DbContext
     
 
     public virtual DbSet<User> user { get; set; }
+    public virtual DbSet<Area> area { get; set; }
     public virtual DbSet<Category> Categories { get; set; }
     public virtual DbSet<Supplier> Supplier { get; set; }
 
@@ -73,6 +74,7 @@ public partial class AccessoriesDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>();
+        modelBuilder.Entity<Area>();
         modelBuilder.Entity<WareHouseResult>().HasNoKey();
         modelBuilder.Entity<StockPurchaseHistoryResult>().HasNoKey();
         modelBuilder.Entity<OrderStatusType>();
@@ -167,16 +169,10 @@ public partial class AccessoriesDbContext : DbContext
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
             entity.Property(e => e.ItemTotal).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.NetAmount).HasColumnType("decimal(18, 2)");
-            entity.Property(e => e.OrderStatus)
-                .HasMaxLength(20)
-                .IsUnicode(false);
-            entity.Property(e => e.PaymentMethod)
-                .HasMaxLength(20)
-                .IsUnicode(false);
+            entity.Property(e => e.OrderStatusId);
+            entity.Property(e => e.OrderPaymentMethodId);
             entity.Property(e => e.ShippingAddress).IsUnicode(false);
-            entity.Property(e => e.ShippingMode)
-                .HasMaxLength(20)
-                .IsUnicode(false);
+            entity.Property(e => e.OrderShippingModeId);
             entity.Property(e => e.TotalWithVATAmount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.TotalWithOutVATAmount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.TrackNumber).HasMaxLength(30);
@@ -203,12 +199,8 @@ public partial class AccessoriesDbContext : DbContext
             entity.Property(e => e.Comments).IsUnicode(false);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
-            entity.Property(e => e.OrderStatus)
-                .HasMaxLength(20)
-                .IsUnicode(false);
-            entity.Property(e => e.PaymentMethod)
-                .HasMaxLength(20)
-                .IsUnicode(false);
+            entity.Property(e => e.OrderStatusId);
+            entity.Property(e => e.PaymentMethodId);
         });
 
         modelBuilder.Entity<OrderPaymentMap>(entity =>

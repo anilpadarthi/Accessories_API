@@ -135,6 +135,58 @@ namespace POS_Accessories.Data.Repository.Repositories
             return resultList;
         }
 
+        public async Task<IEnumerable<LookupResult>> GetAreas()
+        {
+            var resultList = await _context.Set<Area>()
+                             .Select(x => new LookupResult
+                             {
+                                 Id = x.AreaId,
+                                 Name = x.AreaName
+                             }).ToListAsync();
+
+            return resultList;
+        }
+
+        public async Task<IEnumerable<LookupResult>> GetShops(int areaId)
+        {
+            var resultList = await _context.Set<Shop>()
+                             .Select(x => new LookupResult
+                             {
+                                 Id = x.ShopId,
+                                 Name = x.ShopName
+                             }).ToListAsync();
+
+            return resultList;
+        }
+
+
+        public async Task<IEnumerable<LookupResult>> GetAgents()
+        {
+            var resultList = await _context.Set<User>()
+                             .Where(w => w.RoleId == 4)
+                             .Select(x => new LookupResult
+                             {
+                                 Id = x.UserId,
+                                 Name = x.UserName
+                             }).ToListAsync();
+
+            return resultList;
+        }
+
+
+        public async Task<IEnumerable<LookupResult>> GetManagers()
+        {
+            var resultList = await _context.Set<User>()
+                             .Where(w => w.RoleId == 3)
+                             .Select(x => new LookupResult
+                             {
+                                 Id = x.UserId,
+                                 Name = x.UserName
+                             }).ToListAsync();
+
+            return resultList;
+        }
+
 
     }
 }

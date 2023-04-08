@@ -13,7 +13,7 @@ namespace POS_Accessories.Data.Repository.Interfaces
         Task<IEnumerable<OrderDetailsMap>> GetOrderDetailsAsync(int orderId);
         Task<OrderDetailsMap> GetOrderDetailAsync(int orderDetailId);
         Task<IEnumerable<OrderDetailsMap>> GetPagedOrderDetailsAsync(int orderId);
-        Task<IEnumerable<OrderHistoryMap>> GetOrderHistoryAsync(int orderId);
+        Task<IEnumerable<OrderHistoryMap>> GetOrderHistoryAsync(GetPagedSearch request);
         Task<OrderHistoryMap> GetOrderHistoryDetailsAsync(int orderHistoryId);
         Task<IEnumerable<OrderHistoryMap>> GetPagedOrderHistoryDetailsAsync(int orderId);
         Task<IEnumerable<OrderPaymentMap>> GetOrderPaymentsAsync(int orderId);

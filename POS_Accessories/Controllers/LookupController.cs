@@ -83,5 +83,35 @@ namespace POS_Accessories.Controllers
             return Json(result);
         }
 
+        [HttpGet("Agents")]
+        public async Task<IActionResult> GetAgents()
+        {
+            var result = await _service.GetAgents();
+            return Json(result);
+        }
+
+
+        [HttpGet("Managers")]
+        public async Task<IActionResult> GetManagers()
+        {
+            var result = await _service.GetManagers();
+            return Json(result);
+        }
+
+
+        [HttpGet("Areas")]
+        public async Task<IActionResult> GetAreas()
+        {
+            var result = await _service.GetAreas();
+            return Json(result);
+        }
+
+        [HttpGet("Shops")]
+        public async Task<IActionResult> GetShops(int areaId)
+        {
+            var result = await _service.GetShops(areaId);
+            return Json(result);
+        }
+
     }
 }

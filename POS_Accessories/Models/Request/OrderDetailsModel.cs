@@ -12,9 +12,9 @@
         public decimal? TotalWithVATAmount { get; set; }
         public decimal? TotalWithOutVATAmount { get; set; }
         public string? CouponCode { get; set; }
-        public string? OrderStatus { get; set; }
-        public string? PaymentMethod { get; set; }
-        public string? ShippingMode { get; set; }
+        public int? OrderStatusId { get; set; }
+        public int? PaymentMethodId { get; set; }
+        public int? ShippingModeId { get; set; }
         public string? TrackNumber { get; set; }
         public string? ShippingAddress { get; set; }
         public decimal? VatPercentage { get; set; }
